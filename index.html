@@ -21,6 +21,7 @@
   --green-light: #E6F4EC;
   --green-dark: #157A41;
   --amber: #F2A900;
+  --amber-light: #FFF3D6;
   --ink: #0F1E33;
   --slate: #5A6B7B;
   --slate-2: #8A98A8;
@@ -51,7 +52,7 @@ body {
 }
 
 /* ============================================================
-   PHONE FRAME (visible on desktop, hidden on real mobile)
+   PHONE FRAME
 ============================================================ */
 .phone-frame {
   width: 390px;
@@ -84,8 +85,6 @@ body {
   overflow: hidden;
   position: relative;
 }
-
-/* On real phones: drop frame, fill screen */
 @media (max-width: 500px), (max-height: 900px) and (max-width: 700px) {
   body { background: var(--bg); }
   .phone-frame {
@@ -94,12 +93,12 @@ body {
   }
   .phone-frame::before { display: none; }
   .phone-screen { border-radius: 0; }
-  .status-bar { padding-top: env(safe-area-inset-top, 14px); }
-  .tab-bar { padding-bottom: env(safe-area-inset-bottom, 8px); }
+  .status-bar { padding-top: env(safe-area-inset-top, 18px); }
+  .tab-bar { padding-bottom: env(safe-area-inset-bottom, 12px); }
 }
 
 /* ============================================================
-   STATUS BAR (iOS-like) - sits above all screens
+   STATUS BAR
 ============================================================ */
 .status-bar {
   position: absolute;
@@ -118,9 +117,6 @@ body {
 .status-bar.dark { color: white; }
 .status-bar .right { display: flex; align-items: center; gap: 6px; }
 .status-bar svg { display: block; }
-/* Notch reserve: nothing in the center 130px of the status bar */
-.status-bar .left { padding-left: 4px; }
-.status-bar .right { padding-right: 4px; }
 
 /* ============================================================
    SCREEN SYSTEM
@@ -194,52 +190,38 @@ body {
   margin-top: -22px;
   box-shadow: 0 4px 12px rgba(31,157,87,.4);
   transition: transform .2s;
+  position: relative;
 }
 .tab .save-pill svg { width: 18px; height: 18px; }
 .tab .save-pill span { font-size: 11px; color: white; }
 .tab:active .save-pill { transform: scale(.94); }
-
-/* ============================================================
-   CARREFOUR LOGO
-============================================================ */
-.cf-logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 800;
-  font-size: 22px;
-  letter-spacing: -.5px;
-  color: var(--c-blue);
-}
-.cf-mark {
-  width: 32px; height: 32px;
-  background: var(--c-blue);
-  border-radius: 50%;
-  position: relative;
-  flex-shrink: 0;
-  overflow: hidden;
-}
-.cf-mark::before {
+/* tutorial pulse on save pill */
+.tab .save-pill.pulse::after {
   content: '';
   position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(135deg, transparent 49%, white 49%, white 51%, transparent 51%),
-    linear-gradient(45deg, transparent 49%, white 49%, white 51%, transparent 51%);
+  inset: -4px;
+  border-radius: 20px;
+  background: var(--green);
+  opacity: .4;
+  animation: tutorial-pulse 1.8s ease-out infinite;
+  z-index: -1;
 }
-.cf-mark::after {
-  content: '';
+@keyframes tutorial-pulse {
+  0% { transform: scale(1); opacity: .45; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+.tab .badge-dot {
   position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 14px; height: 14px;
+  top: -4px; right: -6px;
+  width: 18px; height: 18px;
   background: var(--c-red);
-  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid white;
 }
-
-/* simpler stylized C+arrows mark using SVG instead */
-.cf-mark-svg { width: 34px; height: 34px; flex-shrink: 0; }
 
 /* ============================================================
    HOME SCREEN
@@ -281,13 +263,10 @@ body {
   width: 40px; height: 40px;
   border-radius: 50%;
   background: linear-gradient(135deg, #FFB347, #FF8C42);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  color: white;
-  font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: white; font-size: 15px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  cursor: pointer;
 }
 .fidelity-card {
   background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
@@ -299,57 +278,35 @@ body {
   z-index: 2;
 }
 .fidelity-card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  display: flex; justify-content: space-between; align-items: flex-start;
 }
 .fidelity-label {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.7);
+  font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px;
+  font-weight: 600; color: rgba(255,255,255,0.7);
 }
 .fidelity-points {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 30px;
-  font-weight: 800;
-  margin-top: 2px;
-  letter-spacing: -.5px;
+  font-family: 'DM Sans', sans-serif; font-size: 30px; font-weight: 800;
+  margin-top: 2px; letter-spacing: -.5px;
 }
 .fidelity-tier {
-  background: var(--amber);
-  color: var(--ink);
-  font-size: 10px;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 12px;
-  letter-spacing: .5px;
-  text-transform: uppercase;
+  background: var(--amber); color: var(--ink); font-size: 10px; font-weight: 800;
+  padding: 4px 10px; border-radius: 12px; letter-spacing: .5px; text-transform: uppercase;
 }
 .fidelity-progress {
-  margin-top: 14px;
-  height: 6px;
-  background: rgba(255,255,255,0.15);
-  border-radius: 3px;
-  overflow: hidden;
+  margin-top: 14px; height: 6px; background: rgba(255,255,255,0.15);
+  border-radius: 3px; overflow: hidden;
 }
 .fidelity-progress-fill {
-  height: 100%;
-  width: 68%;
+  height: 100%; width: 68%;
   background: linear-gradient(90deg, #FFD66B, var(--amber));
   border-radius: 3px;
+  transition: width .8s ease;
 }
 .fidelity-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: rgba(255,255,255,0.7);
-  margin-top: 8px;
-  font-weight: 500;
+  display: flex; justify-content: space-between; font-size: 11px;
+  color: rgba(255,255,255,0.7); margin-top: 8px; font-weight: 500;
 }
 
-/* HERO save-near-me banner */
 .hero-banner {
   margin: -16px 16px 0;
   background: linear-gradient(135deg, var(--green), #16804A);
@@ -382,110 +339,66 @@ body {
   background-size: contain;
 }
 .hero-eyebrow {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-weight: 700;
-  opacity: .85;
+  font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px;
+  font-weight: 700; opacity: .85;
 }
 .hero-title {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 22px;
-  font-weight: 800;
-  margin-top: 6px;
-  letter-spacing: -.4px;
-  line-height: 1.15;
-  position: relative;
-  z-index: 2;
+  font-family: 'DM Sans', sans-serif; font-size: 22px; font-weight: 800;
+  margin-top: 6px; letter-spacing: -.4px; line-height: 1.15;
+  position: relative; z-index: 2;
 }
 .hero-sub {
-  font-size: 13px;
-  margin-top: 6px;
-  opacity: .9;
-  position: relative;
-  z-index: 2;
+  font-size: 13px; margin-top: 6px; opacity: .9; position: relative; z-index: 2;
   max-width: 70%;
 }
 .hero-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: white;
-  color: var(--green-dark);
-  font-size: 13px;
-  font-weight: 700;
-  padding: 8px 14px;
-  border-radius: 100px;
-  margin-top: 14px;
-  position: relative;
-  z-index: 2;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: white; color: var(--green-dark);
+  font-size: 13px; font-weight: 700;
+  padding: 8px 14px; border-radius: 100px;
+  margin-top: 14px; position: relative; z-index: 2;
 }
 .hero-stat-row {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  gap: 14px;
-  margin-top: 16px;
-  padding-top: 14px;
+  position: relative; z-index: 2;
+  display: flex; gap: 14px;
+  margin-top: 16px; padding-top: 14px;
   border-top: 1px solid rgba(255,255,255,0.18);
 }
-.hero-stat {
-  flex: 1;
-}
+.hero-stat { flex: 1; }
 .hero-stat-num {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 18px;
-  font-weight: 800;
+  font-family: 'DM Sans', sans-serif; font-size: 18px; font-weight: 800;
   letter-spacing: -.3px;
 }
-.hero-stat-lbl {
-  font-size: 10.5px;
-  opacity: .85;
-  font-weight: 500;
-  margin-top: 1px;
-}
+.hero-stat-lbl { font-size: 10.5px; opacity: .85; font-weight: 500; margin-top: 1px; }
 
-/* Quick actions */
 .section-title {
   font-family: 'DM Sans', sans-serif;
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: -.3px;
+  font-size: 17px; font-weight: 700; letter-spacing: -.3px;
   color: var(--ink);
   margin: 24px 20px 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: flex; justify-content: space-between; align-items: center;
 }
 .section-title .see-all {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--c-blue);
+  font-size: 12px; font-weight: 600; color: var(--c-blue);
   font-family: 'Inter', sans-serif;
+  cursor: pointer;
 }
 
 .quick-actions {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
   padding: 0 16px;
 }
 .qa-tile {
-  background: white;
-  border-radius: 14px;
+  background: white; border-radius: 14px;
   padding: 12px 6px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
   cursor: pointer;
   border: 1px solid var(--line);
   transition: transform .15s ease;
 }
 .qa-tile:active { transform: scale(.95); }
 .qa-icon {
-  width: 36px; height: 36px;
-  border-radius: 12px;
+  width: 36px; height: 36px; border-radius: 12px;
   background: var(--bg);
   display: flex; align-items: center; justify-content: center;
   color: var(--c-blue);
@@ -495,49 +408,179 @@ body {
 .qa-tile.amber .qa-icon { background: #FEF3D8; color: var(--amber); }
 .qa-tile span { font-size: 10.5px; font-weight: 600; color: var(--ink); text-align: center; line-height: 1.2; }
 
-/* Promo card */
-.promo-card {
+/* Live activity ticker */
+.activity-ticker {
   margin: 0 16px;
   background: white;
-  border-radius: 18px;
-  overflow: hidden;
   border: 1px solid var(--line);
-  display: flex;
-  align-items: center;
-  padding: 14px;
-  gap: 14px;
+  border-radius: 16px;
+  padding: 14px 16px;
+  position: relative;
+  overflow: hidden;
 }
-.promo-img {
-  width: 64px; height: 64px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #FFE4D6, #FFC8A5);
+.ticker-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.ticker-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; gap: 6px;
+}
+.live-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--c-red);
+  animation: livepulse 1.4s ease-in-out infinite;
+}
+@keyframes livepulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .5; transform: scale(1.3); }
+}
+.ticker-live-label {
+  font-size: 10px; text-transform: uppercase;
+  letter-spacing: 1.5px; font-weight: 800; color: var(--c-red);
+}
+.ticker-feed {
+  height: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.ticker-item {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px;
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .4s, transform .4s;
+}
+.ticker-item.show { opacity: 1; transform: translateY(0); }
+.ticker-item .avatar-mini {
+  width: 22px; height: 22px;
+  border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 32px;
+  font-size: 10px; font-weight: 700; color: white;
   flex-shrink: 0;
 }
-.promo-body { flex: 1; }
-.promo-tag {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--c-red);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+
+/* deal carousel on home */
+.deal-carousel {
+  display: flex; gap: 12px;
+  padding: 0 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
 }
-.promo-title { font-size: 14px; font-weight: 700; margin-top: 2px; }
-.promo-sub { font-size: 12px; color: var(--slate); margin-top: 2px; }
+.deal-carousel::-webkit-scrollbar { display: none; }
+.deal-card {
+  flex: 0 0 200px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  scroll-snap-align: start;
+  position: relative;
+  transition: transform .15s ease;
+}
+.deal-card:active { transform: scale(.97); }
+.deal-card-img {
+  height: 110px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 56px;
+  position: relative;
+}
+.deal-card-pct {
+  position: absolute;
+  top: 8px; left: 8px;
+  background: var(--c-red);
+  color: white;
+  font-size: 11px; font-weight: 800;
+  padding: 3px 8px; border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+}
+.deal-card-heart {
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 28px; height: 28px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  border: none;
+}
+.deal-card-heart svg {
+  width: 16px; height: 16px;
+  fill: none; stroke: var(--ink); stroke-width: 2;
+  transition: all .2s ease;
+}
+.deal-card-heart.saved svg {
+  fill: var(--c-red); stroke: var(--c-red);
+  animation: heart-pop .35s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes heart-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+.deal-card-body { padding: 10px 12px 12px; }
+.deal-card-name {
+  font-size: 13px; font-weight: 700; line-height: 1.25;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.deal-card-meta {
+  font-size: 10.5px; color: var(--slate); margin-top: 2px;
+  display: flex; align-items: center; gap: 4px;
+}
+.deal-card-pricing {
+  display: flex; align-items: baseline; gap: 6px; margin-top: 6px;
+}
+.deal-card-new {
+  font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 800;
+  color: var(--green-dark); letter-spacing: -.2px;
+}
+.deal-card-old {
+  font-size: 11px; color: var(--slate-2); text-decoration: line-through; font-weight: 600;
+}
+.deal-card.almost-gone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--c-red);
+  border-radius: 16px;
+  pointer-events: none;
+  animation: urgent-glow 2s ease-in-out infinite;
+  z-index: 2;
+}
+@keyframes urgent-glow {
+  0%, 100% { opacity: .4; }
+  50% { opacity: 1; }
+}
+.urgent-tag {
+  position: absolute;
+  bottom: 8px; right: 8px;
+  background: var(--c-red);
+  color: white;
+  font-size: 9.5px; font-weight: 800;
+  padding: 3px 7px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  z-index: 3;
+}
 
 /* ============================================================
-   GENERIC HEADER (sub-screens)
+   GENERIC HEADER
 ============================================================ */
 .nav-header {
-  display: flex;
-  align-items: center;
+  display: flex; align-items: center;
   padding: 4px 16px 12px;
   gap: 10px;
   background: white;
   border-bottom: 1px solid var(--line);
 }
-.nav-back {
+.nav-back, .nav-action {
   width: 38px; height: 38px;
   border-radius: 50%;
   background: var(--bg);
@@ -546,22 +589,11 @@ body {
   cursor: pointer;
   color: var(--ink);
 }
-.nav-back:active { background: var(--line); }
+.nav-back:active, .nav-action:active { background: var(--line); }
 .nav-title {
   font-family: 'DM Sans', sans-serif;
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: -.3px;
+  font-size: 17px; font-weight: 700; letter-spacing: -.3px;
   flex: 1;
-}
-.nav-action {
-  width: 38px; height: 38px;
-  border-radius: 50%;
-  background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  border: none;
-  cursor: pointer;
-  color: var(--ink);
 }
 
 /* ============================================================
@@ -575,7 +607,6 @@ body {
     radial-gradient(ellipse at 30% 30%, #E8F0F8 0%, #DCE6F0 60%, #C8D6E5 100%);
   overflow: hidden;
 }
-/* fake streets */
 .map-canvas::before {
   content: '';
   position: absolute;
@@ -605,29 +636,21 @@ body {
   background: white;
   border-radius: 14px;
   padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: flex; align-items: center; gap: 10px;
   box-shadow: var(--shadow-md);
   z-index: 20;
 }
 .map-search input {
-  border: none;
-  outline: none;
-  flex: 1;
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--ink);
-  background: none;
+  border: none; outline: none; flex: 1;
+  font-family: inherit; font-size: 14px; font-weight: 500;
+  color: var(--ink); background: none;
 }
 .map-search input::placeholder { color: var(--slate-2); }
 .map-filter-row {
   position: absolute;
   top: 124px; left: 0; right: 0;
   padding: 8px 16px;
-  display: flex;
-  gap: 8px;
+  display: flex; gap: 8px;
   overflow-x: auto;
   z-index: 20;
   scrollbar-width: none;
@@ -638,24 +661,21 @@ body {
   border: 1px solid var(--line);
   border-radius: 100px;
   padding: 7px 14px;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 12px; font-weight: 600;
   color: var(--ink);
   white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  display: flex; align-items: center; gap: 5px;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
-}
-.filter-chip.active {
-  background: var(--green);
-  color: white;
-  border-color: var(--green);
+  font-family: inherit;
+  transition: all .15s ease;
 }
 .filter-chip svg { width: 14px; height: 14px; }
+.filter-chip.active {
+  background: var(--green); color: white; border-color: var(--green);
+}
+.filter-chip:active { transform: scale(.96); }
 
-/* map pins */
 .map-pin {
   position: absolute;
   min-width: 76px;
@@ -664,18 +684,18 @@ body {
   z-index: 5;
   filter: drop-shadow(0 4px 8px rgba(15,30,51,0.25));
   animation: pinDrop .5s cubic-bezier(.34,1.56,.64,1) backwards;
+  transition: transform .2s;
 }
+.map-pin:active { transform: translate(-50%, -100%) scale(.92); }
 @keyframes pinDrop {
   0% { opacity: 0; transform: translate(-50%, -130%); }
   100% { opacity: 1; transform: translate(-50%, -100%); }
 }
 .map-pin .pin-bubble {
-  background: var(--green);
-  color: white;
+  background: var(--green); color: white;
   border-radius: 14px;
   padding: 5px 9px 7px;
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 13px; font-weight: 800;
   text-align: center;
   font-family: 'DM Sans', sans-serif;
   position: relative;
@@ -702,16 +722,11 @@ body {
   z-index: 2;
 }
 .map-pin .pin-count {
-  font-size: 9px;
-  font-weight: 700;
-  opacity: .9;
-  display: block;
-  margin-top: 1px;
-  white-space: nowrap;
+  font-size: 9px; font-weight: 700; opacity: .9;
+  display: block; margin-top: 1px; white-space: nowrap;
 }
 .map-pin.featured .pin-bubble {
   background: var(--c-red);
-  transform: scale(1.1);
 }
 .map-pin.featured .pin-bubble::before { border-top-color: var(--c-red); }
 .map-pin.featured::after {
@@ -724,6 +739,15 @@ body {
   background: var(--c-red);
   opacity: .25;
   animation: pulse 2s ease-out infinite;
+  z-index: -1;
+}
+.map-pin.new-pin {
+  animation: newPinDrop .8s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes newPinDrop {
+  0% { opacity: 0; transform: translate(-50%, -180%) scale(.5); }
+  60% { opacity: 1; transform: translate(-50%, -90%) scale(1.15); }
+  100% { opacity: 1; transform: translate(-50%, -100%) scale(1); }
 }
 @keyframes pulse {
   0% { transform: translate(-50%, -50%) scale(.6); opacity: .35; }
@@ -752,7 +776,6 @@ body {
   animation: pulse 2.5s ease-out infinite;
 }
 
-/* bottom sheet on map */
 .map-sheet {
   position: absolute;
   bottom: 84px; left: 12px; right: 12px;
@@ -761,7 +784,11 @@ body {
   padding: 16px;
   box-shadow: var(--shadow-lg);
   z-index: 10;
+  max-height: 50%;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
+.map-sheet::-webkit-scrollbar { display: none; }
 .map-sheet-handle {
   width: 40px; height: 5px;
   background: var(--line);
@@ -769,90 +796,84 @@ body {
   margin: -4px auto 12px;
 }
 .map-sheet-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: flex; justify-content: space-between; align-items: center;
   margin-bottom: 12px;
 }
 .map-sheet-title {
   font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: -.3px;
+  font-size: 16px; font-weight: 700; letter-spacing: -.3px;
 }
 .map-sheet-count {
-  background: var(--green-light);
-  color: var(--green-dark);
-  font-size: 11px;
-  font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 100px;
+  background: var(--green-light); color: var(--green-dark);
+  font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 100px;
+  transition: all .2s ease;
 }
 .deal-mini {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  display: flex; align-items: center; gap: 12px;
   padding: 10px 0;
   border-bottom: 1px solid var(--line);
   cursor: pointer;
+  transition: background .15s ease;
 }
 .deal-mini:last-child { border-bottom: none; padding-bottom: 0; }
 .deal-mini:first-child { padding-top: 0; }
+.deal-mini:active { background: var(--bg); }
 .deal-mini-img {
-  width: 48px; height: 48px;
-  border-radius: 12px;
+  width: 48px; height: 48px; border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 26px;
-  flex-shrink: 0;
+  font-size: 26px; flex-shrink: 0;
+  position: relative;
 }
 .deal-mini-body { flex: 1; min-width: 0; }
 .deal-mini-name {
-  font-size: 13.5px;
-  font-weight: 700;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 13.5px; font-weight: 700;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .deal-mini-meta {
-  font-size: 11.5px;
-  color: var(--slate);
+  font-size: 11.5px; color: var(--slate);
   margin-top: 1px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  display: flex; align-items: center; gap: 6px;
 }
 .deal-mini-meta svg { width: 11px; height: 11px; }
-.deal-mini-price {
-  text-align: right;
-  flex-shrink: 0;
-}
-.deal-mini-old {
-  font-size: 11px;
-  color: var(--slate-2);
-  text-decoration: line-through;
-}
+.deal-mini-price { text-align: right; flex-shrink: 0; }
+.deal-mini-old { font-size: 11px; color: var(--slate-2); text-decoration: line-through; }
 .deal-mini-new {
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--green-dark);
+  font-size: 15px; font-weight: 800; color: var(--green-dark);
   font-family: 'DM Sans', sans-serif;
 }
 .deal-mini-pct {
-  background: var(--c-red);
-  color: white;
+  background: var(--c-red); color: white;
+  font-size: 10px; font-weight: 800;
+  padding: 2px 6px; border-radius: 6px;
+  display: inline-block; margin-top: 2px;
+}
+.deal-mini.reserved {
+  opacity: .55;
+  pointer-events: none;
+}
+.deal-mini.reserved .deal-mini-name::after {
+  content: ' · RESERVED';
+  color: var(--green);
   font-size: 10px;
   font-weight: 800;
-  padding: 2px 6px;
-  border-radius: 6px;
-  display: inline-block;
-  margin-top: 2px;
+  letter-spacing: .5px;
+}
+.deal-mini.urgent .deal-mini-img::after {
+  content: '';
+  position: absolute;
+  top: -2px; right: -2px;
+  width: 10px; height: 10px;
+  background: var(--c-red);
+  border-radius: 50%;
+  border: 2px solid white;
+  animation: livepulse 1.2s ease-in-out infinite;
 }
 
 /* ============================================================
-   DEAL DETAIL SCREEN
+   DEAL DETAIL
 ============================================================ */
 .deal-hero {
-  background: linear-gradient(135deg, #FFE4D6, #FFC8A5);
   height: 280px;
   display: flex; align-items: center; justify-content: center;
   font-size: 120px;
@@ -862,12 +883,9 @@ body {
 .deal-hero-tag {
   position: absolute;
   top: 110px; left: 16px;
-  background: var(--c-red);
-  color: white;
-  font-weight: 800;
-  font-size: 11px;
-  padding: 5px 11px;
-  border-radius: 100px;
+  background: var(--c-red); color: white;
+  font-weight: 800; font-size: 11px;
+  padding: 5px 11px; border-radius: 100px;
   font-family: 'DM Sans', sans-serif;
   letter-spacing: .2px;
 }
@@ -879,64 +897,84 @@ body {
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   backdrop-filter: blur(8px);
+  border: none;
+  cursor: pointer;
 }
+.deal-hero-save svg {
+  width: 18px; height: 18px;
+  fill: none; stroke: var(--ink); stroke-width: 2;
+}
+.deal-hero-save.saved svg { fill: var(--c-red); stroke: var(--c-red); }
+
 .deal-info { padding: 20px 20px 0; }
 .deal-store {
   font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-weight: 700;
-  color: var(--c-blue);
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  text-transform: uppercase; letter-spacing: 1.5px;
+  font-weight: 700; color: var(--c-blue);
+  display: flex; align-items: center; gap: 6px;
 }
 .deal-name {
   font-family: 'DM Sans', sans-serif;
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -.4px;
-  margin-top: 6px;
-  line-height: 1.2;
+  font-size: 24px; font-weight: 800; letter-spacing: -.4px;
+  margin-top: 6px; line-height: 1.2;
 }
 .deal-sub {
-  font-size: 13px;
-  color: var(--slate);
-  margin-top: 4px;
+  font-size: 13px; color: var(--slate); margin-top: 4px;
 }
 .deal-price-row {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin-top: 14px;
+  display: flex; align-items: baseline; gap: 10px; margin-top: 14px;
+  flex-wrap: wrap;
 }
 .deal-price-new {
   font-family: 'DM Sans', sans-serif;
-  font-size: 32px;
-  font-weight: 800;
-  color: var(--green-dark);
-  letter-spacing: -.5px;
+  font-size: 32px; font-weight: 800;
+  color: var(--green-dark); letter-spacing: -.5px;
 }
 .deal-price-old {
-  font-size: 16px;
-  color: var(--slate-2);
-  text-decoration: line-through;
-  font-weight: 600;
+  font-size: 16px; color: var(--slate-2);
+  text-decoration: line-through; font-weight: 600;
 }
 .deal-price-saving {
-  background: var(--green-light);
-  color: var(--green-dark);
-  font-size: 11px;
-  font-weight: 800;
-  padding: 4px 9px;
-  border-radius: 8px;
-  letter-spacing: .3px;
+  background: var(--green-light); color: var(--green-dark);
+  font-size: 11px; font-weight: 800;
+  padding: 4px 9px; border-radius: 8px; letter-spacing: .3px;
 }
+
+/* countdown urgency bar */
+.urgency-bar {
+  margin: 16px 20px 0;
+  background: linear-gradient(135deg, #FFF1F2, #FFE4E6);
+  border: 1px solid #FFD0D4;
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.urgency-icon {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--c-red);
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  flex-shrink: 0;
+  animation: livepulse 1.6s ease-in-out infinite;
+}
+.urgency-text { flex: 1; }
+.urgency-title {
+  font-size: 13px; font-weight: 700; color: var(--c-red-dark);
+}
+.urgency-sub {
+  font-size: 11.5px; color: var(--slate); margin-top: 1px;
+}
+.urgency-countdown {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px; font-weight: 800;
+  color: var(--c-red);
+  letter-spacing: -.2px;
+}
+
 .deal-meta-grid {
   margin: 20px 20px 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
 }
 .meta-tile {
   background: white;
@@ -945,20 +983,14 @@ body {
   padding: 12px;
 }
 .meta-tile-label {
-  font-size: 10.5px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--slate);
-  font-weight: 600;
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--slate); font-weight: 600;
 }
 .meta-tile-value {
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 14px; font-weight: 700;
   margin-top: 4px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  display: flex; align-items: center; gap: 6px;
 }
 
 .impact-card {
@@ -966,42 +998,51 @@ body {
   background: linear-gradient(135deg, var(--green-light), #D8F0E2);
   border-radius: 16px;
   padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
+  display: flex; align-items: center; gap: 14px;
   border: 1px solid rgba(31,157,87,0.15);
 }
 .impact-icon {
   width: 44px; height: 44px;
-  background: white;
-  border-radius: 12px;
+  background: white; border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
-  color: var(--green);
-  flex-shrink: 0;
+  color: var(--green); flex-shrink: 0;
 }
 .impact-text { flex: 1; }
-.impact-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--green-dark);
-}
-.impact-sub {
-  font-size: 12px;
-  color: var(--slate);
-  margin-top: 2px;
-}
+.impact-title { font-size: 13px; font-weight: 700; color: var(--green-dark); }
+.impact-sub { font-size: 12px; color: var(--slate); margin-top: 2px; }
 .impact-points {
-  background: var(--green);
-  color: white;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 800;
-  font-size: 15px;
-  padding: 6px 12px;
-  border-radius: 10px;
+  background: var(--green); color: white;
+  font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 15px;
+  padding: 6px 12px; border-radius: 10px;
   flex-shrink: 0;
 }
 
-/* Reserve CTA bar */
+/* who else is saving section */
+.social-proof {
+  margin: 0 20px 20px;
+  padding: 12px 14px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+.avatar-stack {
+  display: flex;
+  flex-shrink: 0;
+}
+.avatar-stack .avatar-mini {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: white;
+  margin-left: -8px;
+}
+.avatar-stack .avatar-mini:first-child { margin-left: 0; }
+.social-proof-text { font-size: 12.5px; color: var(--ink); flex: 1; }
+.social-proof-text strong { font-weight: 700; }
+
+/* CTA bar */
 .cta-bar {
   position: absolute;
   bottom: 0; left: 0; right: 0;
@@ -1013,28 +1054,20 @@ body {
 }
 .cta-button {
   width: 100%;
-  background: var(--c-blue);
-  color: white;
-  border: none;
-  border-radius: 14px;
+  background: var(--c-blue); color: white;
+  border: none; border-radius: 14px;
   padding: 16px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: -.2px;
+  font-size: 16px; font-weight: 700; letter-spacing: -.2px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
   transition: transform .12s ease, background .15s ease;
 }
 .cta-button:active { transform: scale(.98); background: var(--c-blue-dark); }
 .cta-button.green { background: var(--green); }
 .cta-button.green:active { background: var(--green-dark); }
 .cta-button.loading {
-  background: var(--slate-2);
-  pointer-events: none;
+  background: var(--slate-2); pointer-events: none;
 }
 .cta-button.loading .cta-label { display: none; }
 .cta-button .spinner {
@@ -1057,23 +1090,20 @@ body {
 }
 .confirm-body {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 80px 24px 120px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  padding: 80px 24px 130px;
   text-align: center;
   position: relative;
   overflow: hidden;
 }
 .confirm-check {
-  width: 110px; height: 110px;
+  width: 100px; height: 100px;
   border-radius: 50%;
   background: white;
   display: flex; align-items: center; justify-content: center;
-  margin-bottom: 28px;
-  position: relative;
-  z-index: 2;
+  margin-bottom: 22px;
+  position: relative; z-index: 2;
   animation: bounceIn .6s cubic-bezier(.34,1.56,.64,1);
 }
 @keyframes bounceIn {
@@ -1081,56 +1111,75 @@ body {
   60% { transform: scale(1.15); opacity: 1; }
   100% { transform: scale(1); }
 }
-.confirm-check svg { width: 56px; height: 56px; color: var(--green); }
+.confirm-check svg { width: 50px; height: 50px; color: var(--green); }
 .confirm-title {
   font-family: 'DM Sans', sans-serif;
-  font-size: 30px;
-  font-weight: 800;
-  letter-spacing: -.5px;
-  margin-bottom: 10px;
-  z-index: 2;
+  font-size: 28px; font-weight: 800; letter-spacing: -.5px;
+  margin-bottom: 8px; z-index: 2;
 }
 .confirm-sub {
-  font-size: 15px;
-  opacity: .9;
-  max-width: 280px;
-  line-height: 1.5;
-  z-index: 2;
+  font-size: 14px; opacity: .9; max-width: 280px;
+  line-height: 1.5; z-index: 2;
 }
-
 .confirm-points-card {
-  margin-top: 32px;
+  margin-top: 22px;
   background: rgba(255,255,255,0.12);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255,255,255,0.2);
   border-radius: 20px;
-  padding: 20px;
-  width: 100%;
-  max-width: 320px;
+  padding: 18px;
+  width: 100%; max-width: 320px;
   z-index: 2;
 }
 .confirm-points-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0;
 }
 .confirm-points-row + .confirm-points-row {
   border-top: 1px solid rgba(255,255,255,0.15);
 }
 .confirm-points-label {
-  font-size: 13px;
-  opacity: .85;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  font-size: 13px; opacity: .85; text-align: left;
+  display: flex; align-items: center; gap: 8px;
 }
 .confirm-points-value {
+  font-family: 'DM Sans', sans-serif; font-weight: 800;
+  font-size: 17px; letter-spacing: -.3px;
+}
+/* badge unlock notification */
+.badge-unlock {
+  margin-top: 18px;
+  background: var(--amber);
+  color: var(--ink);
+  border-radius: 16px;
+  padding: 14px 16px;
+  width: 100%; max-width: 320px;
+  display: flex; align-items: center; gap: 12px;
+  z-index: 2;
+  animation: badgeSlide .8s cubic-bezier(.34,1.56,.64,1) .4s backwards;
+  box-shadow: 0 8px 24px rgba(242,169,0,0.4);
+}
+@keyframes badgeSlide {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.badge-unlock-icon {
+  width: 44px; height: 44px;
+  background: white; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.badge-unlock-text { flex: 1; text-align: left; }
+.badge-unlock-eyebrow {
+  font-size: 10px; text-transform: uppercase;
+  letter-spacing: 1.5px; font-weight: 800;
+  opacity: .7;
+}
+.badge-unlock-title {
   font-family: 'DM Sans', sans-serif;
-  font-weight: 800;
-  font-size: 17px;
-  letter-spacing: -.3px;
+  font-size: 15px; font-weight: 800;
+  margin-top: 1px;
 }
 
 .confetti {
@@ -1145,24 +1194,19 @@ body {
   10% { opacity: 1; }
   100% { transform: translateY(800px) rotate(720deg); opacity: 0; }
 }
-
 .confirm-cta-row {
   position: absolute;
   bottom: 0; left: 0; right: 0;
   padding: 16px;
   padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
-  display: flex;
-  gap: 10px;
+  display: flex; gap: 10px;
 }
 .confirm-cta-row button {
-  flex: 1;
-  padding: 14px;
+  flex: 1; padding: 14px;
   border-radius: 14px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
+  font-size: 14px; font-weight: 700;
+  border: none; cursor: pointer;
 }
 .confirm-share {
   background: rgba(255,255,255,0.15);
@@ -1171,12 +1215,11 @@ body {
   border-style: solid;
 }
 .confirm-done {
-  background: white;
-  color: var(--green-dark);
+  background: white; color: var(--green-dark);
 }
 
 /* ============================================================
-   LOYALTY / PROFILE SCREEN
+   PROFILE
 ============================================================ */
 .profile-header {
   background: linear-gradient(135deg, var(--c-blue) 0%, var(--c-blue-deep) 100%);
@@ -1194,11 +1237,8 @@ body {
     radial-gradient(circle at 80% 60%, rgba(255,215,0,0.05), transparent 50%);
 }
 .profile-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  position: relative;
-  z-index: 2;
+  display: flex; align-items: center; gap: 14px;
+  position: relative; z-index: 2;
 }
 .profile-avatar {
   width: 56px; height: 56px;
@@ -1211,23 +1251,16 @@ body {
 }
 .profile-name {
   font-family: 'DM Sans', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -.3px;
+  font-size: 20px; font-weight: 700; letter-spacing: -.3px;
 }
-.profile-handle {
-  font-size: 12px;
-  opacity: .7;
-  margin-top: 2px;
-}
+.profile-handle { font-size: 12px; opacity: .7; margin-top: 2px; }
 .profile-tier-card {
   background: linear-gradient(135deg, rgba(242,169,0,0.95), rgba(255,193,7,0.95));
   border-radius: 18px;
   padding: 18px;
   margin-top: 22px;
   color: var(--ink);
-  position: relative;
-  z-index: 2;
+  position: relative; z-index: 2;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0,0,0,0.2);
 }
@@ -1240,51 +1273,35 @@ body {
   border-radius: 50%;
 }
 .tier-eyebrow {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-weight: 700;
-  opacity: .7;
+  font-size: 10px; text-transform: uppercase;
+  letter-spacing: 1.5px; font-weight: 700; opacity: .7;
 }
 .tier-name {
   font-family: 'DM Sans', sans-serif;
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -.4px;
+  font-size: 24px; font-weight: 800; letter-spacing: -.4px;
   margin-top: 2px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: flex; align-items: center; gap: 8px;
 }
 .tier-name svg { width: 22px; height: 22px; }
 .tier-progress-row {
   margin-top: 14px;
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  font-weight: 600;
+  display: flex; justify-content: space-between;
+  font-size: 12px; font-weight: 600;
 }
 .tier-bar {
   height: 8px;
   background: rgba(0,0,0,0.15);
-  border-radius: 4px;
-  margin-top: 6px;
+  border-radius: 4px; margin-top: 6px;
   overflow: hidden;
 }
 .tier-bar-fill {
-  height: 100%;
-  width: 68%;
+  height: 100%; width: 68%;
   background: var(--c-blue);
   border-radius: 4px;
+  transition: width 1s ease;
 }
-.tier-next {
-  font-size: 11.5px;
-  margin-top: 8px;
-  opacity: .8;
-  font-weight: 500;
-}
+.tier-next { font-size: 11.5px; margin-top: 8px; opacity: .8; font-weight: 500; }
 
-/* impact panel under tier card */
 .impact-panel {
   margin: -70px 16px 0;
   background: white;
@@ -1296,32 +1313,23 @@ body {
   overflow: hidden;
 }
 .impact-panel-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: flex; justify-content: space-between; align-items: center;
   margin-bottom: 14px;
 }
 .impact-panel-title {
   font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  font-size: 15px; font-weight: 700;
+  display: flex; align-items: center; gap: 6px;
 }
 .impact-panel-title svg { color: var(--green); width: 18px; height: 18px; }
 .impact-period {
-  font-size: 11px;
-  color: var(--slate);
+  font-size: 11px; color: var(--slate);
   background: var(--bg);
-  padding: 4px 9px;
-  border-radius: 8px;
+  padding: 4px 9px; border-radius: 8px;
   font-weight: 600;
 }
 .impact-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
 }
 .impact-stat {
   background: var(--bg);
@@ -1331,26 +1339,97 @@ body {
 }
 .impact-stat-num {
   font-family: 'DM Sans', sans-serif;
-  font-size: 19px;
-  font-weight: 800;
+  font-size: 19px; font-weight: 800;
   color: var(--green-dark);
   letter-spacing: -.3px;
 }
 .impact-stat-lbl {
-  font-size: 9.5px;
-  color: var(--slate);
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  font-weight: 600;
-  margin-top: 2px;
+  font-size: 9.5px; color: var(--slate);
+  text-transform: uppercase; letter-spacing: .5px;
+  font-weight: 600; margin-top: 2px;
 }
 
-/* badges row */
-.badges-section { margin: 22px 16px 0; }
+/* active reservations card */
+.reservations-card {
+  margin: 22px 16px 0;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+}
+.reservations-empty {
+  text-align: center;
+  padding: 20px 0;
+  color: var(--slate);
+  font-size: 13px;
+}
+.reservation-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.reservation-item:last-child { border-bottom: none; padding-bottom: 0; }
+.reservation-item:first-of-type { padding-top: 0; }
+.reservation-img {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.reservation-body { flex: 1; }
+.reservation-name { font-size: 13px; font-weight: 700; }
+.reservation-store { font-size: 11px; color: var(--slate); margin-top: 1px; }
+.reservation-action {
+  background: var(--green-light); color: var(--green-dark);
+  font-size: 11px; font-weight: 700;
+  padding: 5px 10px; border-radius: 8px;
+  border: none; cursor: pointer;
+  font-family: inherit;
+}
+
+.streak-card {
+  margin: 22px 16px 0;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+}
+.streak-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 12px;
+}
+.streak-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 700;
+  display: flex; align-items: center; gap: 6px;
+}
+.streak-count {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px; font-weight: 800;
+  color: var(--amber);
+}
+.streak-week {
+  display: flex; justify-content: space-between; gap: 4px;
+}
+.streak-day { flex: 1; text-align: center; }
+.streak-day-name {
+  font-size: 10px; color: var(--slate);
+  font-weight: 600; margin-bottom: 4px;
+}
+.streak-dot {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--bg);
+  color: var(--slate-2);
+  font-size: 13px; font-weight: 700;
+}
+.streak-dot.done { background: var(--green); color: white; }
+.streak-dot.today { background: white; color: var(--c-blue); border: 2px solid var(--c-blue); }
+
+.badges-section { margin: 22px 16px 30px; }
 .badges-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
 }
 .badge-tile {
   background: white;
@@ -1359,7 +1438,10 @@ body {
   padding: 14px 8px;
   text-align: center;
   position: relative;
+  cursor: pointer;
+  transition: transform .15s ease;
 }
+.badge-tile:active { transform: scale(.95); }
 .badge-tile.locked { opacity: .45; }
 .badge-icon {
   width: 50px; height: 50px;
@@ -1370,91 +1452,49 @@ body {
   background: var(--green-light);
 }
 .badge-tile.locked .badge-icon { background: var(--bg); filter: grayscale(1); }
-.badge-name {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--ink);
-}
-.badge-meta {
-  font-size: 9.5px;
-  color: var(--slate);
-  margin-top: 2px;
-}
+.badge-name { font-size: 11px; font-weight: 700; color: var(--ink); }
+.badge-meta { font-size: 9.5px; color: var(--slate); margin-top: 2px; }
 .badge-tile.new::after {
   content: 'NEW';
   position: absolute;
   top: 6px; right: 6px;
-  background: var(--c-red);
-  color: white;
-  font-size: 8px;
-  font-weight: 800;
-  padding: 2px 5px;
-  border-radius: 5px;
+  background: var(--c-red); color: white;
+  font-size: 8px; font-weight: 800;
+  padding: 2px 5px; border-radius: 5px;
 }
 
-/* streaks card */
-.streak-card {
-  margin: 22px 16px 0;
-  background: white;
-  border: 1px solid var(--line);
+/* level-up overlay (when reservation triggers progress) */
+.level-toast {
+  position: absolute;
+  top: 70px; left: 12px; right: 12px;
+  background: linear-gradient(135deg, var(--amber), #FFC547);
+  color: var(--ink);
   border-radius: 16px;
-  padding: 16px;
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px;
+  z-index: 80;
+  box-shadow: 0 8px 24px rgba(242,169,0,0.4);
+  transform: translateY(-200px);
+  opacity: 0;
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .25s;
 }
-.streak-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-.streak-title {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  display: flex; align-items: center; gap: 6px;
-}
-.streak-count {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--amber);
-}
-.streak-week {
-  display: flex;
-  justify-content: space-between;
-  gap: 4px;
-}
-.streak-day {
-  flex: 1;
-  text-align: center;
-}
-.streak-day-name {
-  font-size: 10px;
-  color: var(--slate);
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-.streak-dot {
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg);
-  color: var(--slate-2);
-  font-size: 13px;
-  font-weight: 700;
-}
-.streak-dot.done {
-  background: var(--green);
-  color: white;
-}
-.streak-dot.today {
+.level-toast.show { transform: translateY(0); opacity: 1; }
+.level-toast-icon {
+  width: 38px; height: 38px;
   background: white;
-  color: var(--c-blue);
-  border: 2px solid var(--c-blue);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
 }
+.level-toast-text { flex: 1; min-width: 0; }
+.level-toast-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 800;
+}
+.level-toast-sub { font-size: 11.5px; opacity: .75; margin-top: 1px; }
 
-/* push notification toast */
+/* push notification */
 .push-toast {
   position: absolute;
   top: 62px; left: 12px; right: 12px;
@@ -1463,84 +1503,115 @@ body {
   -webkit-backdrop-filter: blur(24px);
   border-radius: 16px;
   padding: 12px 14px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  display: flex; align-items: flex-start; gap: 10px;
   z-index: 90;
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
   transform: translateY(-200px);
   opacity: 0;
   transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .25s;
+  cursor: pointer;
 }
-.push-toast.show {
-  transform: translateY(0);
-  opacity: 1;
-}
+.push-toast.show { transform: translateY(0); opacity: 1; }
 .push-app-icon {
   width: 32px; height: 32px;
   border-radius: 8px;
   background: var(--c-blue);
   display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  color: white;
-  font-weight: 800;
-  font-size: 18px;
+  flex-shrink: 0; color: white; font-weight: 800; font-size: 18px;
   font-family: 'DM Sans', sans-serif;
 }
 .push-content { flex: 1; min-width: 0; }
 .push-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: flex; justify-content: space-between; align-items: center;
   margin-bottom: 2px;
 }
 .push-app {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--ink);
-  text-transform: uppercase;
-  letter-spacing: .3px;
+  font-size: 11px; font-weight: 700; color: var(--ink);
+  text-transform: uppercase; letter-spacing: .3px;
 }
-.push-time {
-  font-size: 10px;
-  color: var(--slate);
-}
-.push-title {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.3;
-}
-.push-sub {
-  font-size: 12px;
-  color: var(--ink);
-  line-height: 1.35;
-  margin-top: 1px;
-}
+.push-time { font-size: 10px; color: var(--slate); }
+.push-title { font-size: 13.5px; font-weight: 700; color: var(--ink); line-height: 1.3; }
+.push-sub { font-size: 12px; color: var(--ink); line-height: 1.35; margin-top: 1px; }
 
-/* ============================================================
-   SPLASH
-============================================================ */
-.splash {
-  background: var(--c-blue);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 16px;
-}
-.splash svg { width: 90px; height: 90px; }
-.splash-name {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -.5px;
-}
-
-/* small helpers */
 .icon-sm { width: 16px; height: 16px; }
 .icon-md { width: 20px; height: 20px; }
+
+/* badge-detail modal */
+.modal-overlay {
+  position: absolute; inset: 0;
+  background: rgba(15,30,51,0.6);
+  backdrop-filter: blur(6px);
+  z-index: 95;
+  display: flex; align-items: flex-end; justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+.modal-overlay.show { opacity: 1; pointer-events: auto; }
+.modal-sheet {
+  width: 100%; background: white;
+  border-radius: 24px 24px 0 0;
+  padding: 22px 22px 32px;
+  transform: translateY(100%);
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+  text-align: center;
+}
+.modal-overlay.show .modal-sheet { transform: translateY(0); }
+.modal-handle {
+  width: 40px; height: 5px;
+  background: var(--line);
+  border-radius: 3px;
+  margin: -8px auto 18px;
+}
+.modal-badge-icon {
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  background: var(--green-light);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 44px;
+  margin: 0 auto 14px;
+}
+.modal-badge-icon.locked { background: var(--bg); filter: grayscale(1); }
+.modal-badge-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 22px; font-weight: 800; letter-spacing: -.3px;
+}
+.modal-badge-desc { font-size: 13px; color: var(--slate); margin-top: 6px; }
+.modal-badge-meta {
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 12px;
+  font-size: 12.5px; color: var(--slate);
+}
+.modal-close {
+  margin-top: 18px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--c-blue); color: white;
+  border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px; font-weight: 700;
+}
+
+/* Toast (small bottom snack) */
+.snack {
+  position: absolute;
+  bottom: 100px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 100px;
+  font-size: 13px; font-weight: 600;
+  z-index: 85;
+  opacity: 0;
+  transition: opacity .25s, transform .25s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.snack.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
@@ -1548,33 +1619,54 @@ body {
 <div class="phone-frame">
   <div class="phone-screen" id="phone">
 
-    <!-- ============ STATUS BAR ============ -->
+    <!-- STATUS BAR -->
     <div class="status-bar" id="statusBar">
       <span class="left" id="clockTime">9:41</span>
       <div class="right">
-        <!-- signal -->
         <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.6"/><rect x="5" y="5" width="3" height="6" rx="0.6"/><rect x="10" y="2.5" width="3" height="8.5" rx="0.6"/><rect x="15" y="0" width="3" height="11" rx="0.6"/></svg>
-        <!-- wifi -->
         <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 11l2-2.5a2.83 2.83 0 00-4 0L8 11zm-4-4.7L5.5 7.7a4.5 4.5 0 015 0L12 6.3a6.4 6.4 0 00-8 0zM.5 2.8L2 4.2a9.7 9.7 0 0112 0l1.5-1.4a11.7 11.7 0 00-15 0z"/></svg>
-        <!-- battery -->
         <svg width="27" height="12" viewBox="0 0 27 12" fill="none"><rect x="0.5" y="0.5" width="22" height="11" rx="2.5" stroke="currentColor" stroke-opacity="0.4"/><rect x="2" y="2" width="19" height="8" rx="1.5" fill="currentColor"/><path d="M24 4v4a1.5 1.5 0 000-4z" fill="currentColor" fill-opacity="0.4"/></svg>
       </div>
     </div>
 
-    <!-- ============ PUSH NOTIFICATION TOAST ============ -->
+    <!-- PUSH TOAST -->
     <div class="push-toast" id="pushToast" onclick="dismissPush(); goTo('map')">
       <div class="push-app-icon">C</div>
       <div class="push-content">
         <div class="push-head">
-          <span class="push-app">Carrefour</span>
-          <span class="push-time">now</span>
+          <span class="push-app" id="pushApp">Carrefour</span>
+          <span class="push-time" id="pushTime">now</span>
         </div>
-        <div class="push-title">3 deals near you, ending soon 🌿</div>
-        <div class="push-sub">Boulangerie + 2 more · Save up to 60% within 800 m. Tap to see the map.</div>
+        <div class="push-title" id="pushTitle">3 deals near you, ending soon 🌿</div>
+        <div class="push-sub" id="pushSub">Boulangerie + 2 more · Save up to 60% within 800 m. Tap to see the map.</div>
       </div>
     </div>
 
-    <!-- ============ SCREEN: HOME ============ -->
+    <!-- LEVEL-UP TOAST -->
+    <div class="level-toast" id="levelToast">
+      <div class="level-toast-icon">⚡</div>
+      <div class="level-toast-text">
+        <div class="level-toast-title" id="levelToastTitle">+25 Green Points</div>
+        <div class="level-toast-sub" id="levelToastSub">You're 1,335 pts from Platinum</div>
+      </div>
+    </div>
+
+    <!-- SNACK TOAST -->
+    <div class="snack" id="snack"></div>
+
+    <!-- MODAL OVERLAY (badge details) -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+      <div class="modal-sheet" id="modalSheet" onclick="event.stopPropagation()">
+        <div class="modal-handle"></div>
+        <div class="modal-badge-icon" id="modalBadgeIcon">🌱</div>
+        <div class="modal-badge-name" id="modalBadgeName">Eco Starter</div>
+        <div class="modal-badge-desc" id="modalBadgeDesc">Save 5 products from being wasted.</div>
+        <div class="modal-badge-meta" id="modalBadgeMeta">Earned · 5/5 saves completed</div>
+        <button class="modal-close" onclick="closeModal()">Got it</button>
+      </div>
+    </div>
+
+    <!-- ============ HOME ============ -->
     <div class="screen active" id="screen-home">
       <div class="screen-body">
         <div class="home-header">
@@ -1583,20 +1675,20 @@ body {
               <div class="home-greeting">Good afternoon</div>
               <div class="home-name">Bonjour, Léa 👋</div>
             </div>
-            <div class="home-avatar">L</div>
+            <div class="home-avatar" onclick="goTo('profile')">L</div>
           </div>
-          <div class="fidelity-card">
+          <div class="fidelity-card" onclick="goTo('profile')">
             <div class="fidelity-card-top">
               <div>
                 <div class="fidelity-label">My Carrefour Card</div>
-                <div class="fidelity-points">2,840 <span style="font-size:14px; opacity:.7; font-weight:600;">pts</span></div>
+                <div class="fidelity-points"><span id="homePoints">2,840</span> <span style="font-size:14px; opacity:.7; font-weight:600;">pts</span></div>
               </div>
               <div class="fidelity-tier">⚡ Gold</div>
             </div>
-            <div class="fidelity-progress"><div class="fidelity-progress-fill"></div></div>
+            <div class="fidelity-progress"><div class="fidelity-progress-fill" id="homeProgress"></div></div>
             <div class="fidelity-meta">
-              <span>1,360 pts to Platinum</span>
-              <span>€28.40 cashback ready</span>
+              <span id="homeToPlatinum">1,360 pts to Platinum</span>
+              <span id="homeCashback">€28.40 cashback ready</span>
             </div>
           </div>
         </div>
@@ -1611,7 +1703,7 @@ body {
           </span>
           <div class="hero-stat-row">
             <div class="hero-stat">
-              <div class="hero-stat-num">12</div>
+              <div class="hero-stat-num" id="heroDeals">12</div>
               <div class="hero-stat-lbl">deals near you</div>
             </div>
             <div class="hero-stat">
@@ -1619,9 +1711,24 @@ body {
               <div class="hero-stat-lbl">average save</div>
             </div>
             <div class="hero-stat">
-              <div class="hero-stat-num">3</div>
+              <div class="hero-stat-num" id="heroEndingSoon">3</div>
               <div class="hero-stat-lbl">ending soon</div>
             </div>
+          </div>
+        </div>
+
+        <!-- live activity ticker -->
+        <div class="section-title">What's happening now <span class="see-all"></span></div>
+        <div class="activity-ticker">
+          <div class="ticker-head">
+            <div class="ticker-title">
+              <span class="live-dot"></span>
+              Community saves
+            </div>
+            <div class="ticker-live-label">LIVE</div>
+          </div>
+          <div class="ticker-feed" id="tickerFeed">
+            <!-- items injected by JS -->
           </div>
         </div>
 
@@ -1633,19 +1740,19 @@ body {
             </div>
             <span>Save</span>
           </div>
-          <div class="qa-tile">
+          <div class="qa-tile" onclick="showSnack('Coupons coming soon')">
             <div class="qa-icon">
               <svg class="icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M8 6V4M16 6V4"/></svg>
             </div>
             <span>Coupons</span>
           </div>
-          <div class="qa-tile red">
+          <div class="qa-tile red" onclick="showSnack('Carrefour shop')">
             <div class="qa-icon">
               <svg class="icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 01-8 0"/></svg>
             </div>
             <span>Shop</span>
           </div>
-          <div class="qa-tile amber">
+          <div class="qa-tile amber" onclick="goTo('profile')">
             <div class="qa-icon">
               <svg class="icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             </div>
@@ -1653,78 +1760,46 @@ body {
           </div>
         </div>
 
-        <div class="section-title">Picked for you <span class="see-all">See all</span></div>
-        <div class="promo-card" onclick="goTo('deal')">
-          <div class="promo-img">🥐</div>
-          <div class="promo-body">
-            <div class="promo-tag">-50% · Save Near Me</div>
-            <div class="promo-title">Croissants × 6 — Boulangerie</div>
-            <div class="promo-sub">Carrefour City République · 450 m · pickup until 7 PM</div>
-          </div>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5A6B7B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        <div class="section-title">Picked for you <span class="see-all" onclick="goTo('map')">See all</span></div>
+        <div class="deal-carousel" id="dealCarousel">
+          <!-- deal cards injected by JS -->
         </div>
 
-        <div style="height: 24px;"></div>
+        <div style="height: 30px;"></div>
       </div>
 
-      <!-- tab bar -->
       <div class="tab-bar">
-        <button class="tab active" onclick="goTo('home')">
+        <button class="tab active" data-tab="home" onclick="goTo('home')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2h-4v-7H9v7H5a2 2 0 01-2-2z"/></svg>
           <span>Home</span>
         </button>
-        <button class="tab" onclick="goTo('map')">
-          <span class="save-pill">
+        <button class="tab" data-tab="map" onclick="goTo('map')">
+          <span class="save-pill pulse" id="savePillHome">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
             <span>Save</span>
           </span>
         </button>
-        <button class="tab" onclick="goTo('map')">
+        <button class="tab" onclick="showSnack('Search')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
           <span>Search</span>
         </button>
-        <button class="tab" onclick="goTo('profile')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <button class="tab" data-tab="profile" onclick="goTo('profile')">
+          <span style="position: relative;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="badge-dot" id="profileBadgeDot" style="display:none;">!</span>
+          </span>
           <span>Account</span>
         </button>
       </div>
     </div>
 
-    <!-- ============ SCREEN: MAP ============ -->
+    <!-- ============ MAP ============ -->
     <div class="screen map-screen" id="screen-map">
       <div class="map-canvas">
         <div class="user-pin"></div>
 
-        <!-- map pins with positions (deal counts) -->
-        <div class="map-pin featured" style="top: 48%; left: 50%; animation-delay: 0.05s" onclick="goTo('deal')">
-          <div class="pin-bubble">
-            €2.50
-            <span class="pin-count">4 deals</span>
-          </div>
-        </div>
-        <div class="map-pin" style="top: 38%; left: 26%; animation-delay: 0.12s" onclick="goTo('deal')">
-          <div class="pin-bubble">
-            €4.20
-            <span class="pin-count">3 deals</span>
-          </div>
-        </div>
-        <div class="map-pin" style="top: 34%; left: 72%; animation-delay: 0.18s" onclick="goTo('deal')">
-          <div class="pin-bubble">
-            €1.90
-            <span class="pin-count">2 deals</span>
-          </div>
-        </div>
-        <div class="map-pin" style="top: 60%; left: 22%; animation-delay: 0.24s" onclick="goTo('deal')">
-          <div class="pin-bubble">
-            €5.50
-            <span class="pin-count">3 deals</span>
-          </div>
-        </div>
-        <div class="map-pin" style="top: 62%; left: 78%; animation-delay: 0.30s" onclick="goTo('deal')">
-          <div class="pin-bubble">
-            €3.10
-            <span class="pin-count">5 deals</span>
-          </div>
+        <div id="mapPins">
+          <!-- pins injected by JS -->
         </div>
 
         <div class="map-search">
@@ -1733,80 +1808,56 @@ body {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5A6B7B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
         </div>
 
-        <div class="map-filter-row">
-          <button class="filter-chip active">
+        <div class="map-filter-row" id="filterRow">
+          <button class="filter-chip active" data-filter="all" onclick="applyFilter('all', this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
-            All deals · 12
+            All deals
           </button>
-          <button class="filter-chip">🥐 Bakery</button>
-          <button class="filter-chip">🥗 Fresh</button>
-          <button class="filter-chip">🧀 Dairy</button>
-          <button class="filter-chip">🥩 Meat</button>
-          <button class="filter-chip">−50% +</button>
+          <button class="filter-chip" data-filter="bakery" onclick="applyFilter('bakery', this)">🥐 Bakery</button>
+          <button class="filter-chip" data-filter="fresh" onclick="applyFilter('fresh', this)">🥗 Fresh</button>
+          <button class="filter-chip" data-filter="dairy" onclick="applyFilter('dairy', this)">🧀 Dairy</button>
+          <button class="filter-chip" data-filter="meat" onclick="applyFilter('meat', this)">🥩 Meat</button>
+          <button class="filter-chip" data-filter="deep" onclick="applyFilter('deep', this)">−50% +</button>
         </div>
 
         <div class="map-sheet">
           <div class="map-sheet-handle"></div>
           <div class="map-sheet-head">
-            <div class="map-sheet-title">Deals within 800 m</div>
-            <div class="map-sheet-count">12 items</div>
+            <div class="map-sheet-title" id="mapSheetTitle">Deals within 800 m</div>
+            <div class="map-sheet-count" id="mapSheetCount">12 items</div>
           </div>
-          <div class="deal-mini" onclick="goTo('deal')">
-            <div class="deal-mini-img" style="background: linear-gradient(135deg, #FFE4D6, #FFC8A5)">🥐</div>
-            <div class="deal-mini-body">
-              <div class="deal-mini-name">Croissants × 6</div>
-              <div class="deal-mini-meta">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                450 m · ends 7 PM
-              </div>
-            </div>
-            <div class="deal-mini-price">
-              <div class="deal-mini-old">€5.00</div>
-              <div class="deal-mini-new">€2.50</div>
-              <span class="deal-mini-pct">-50%</span>
-            </div>
-          </div>
-          <div class="deal-mini" onclick="goTo('deal')">
-            <div class="deal-mini-img" style="background: linear-gradient(135deg, #E8F4E0, #C8E6B0)">🥗</div>
-            <div class="deal-mini-body">
-              <div class="deal-mini-name">Salade César — 350 g</div>
-              <div class="deal-mini-meta">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                620 m · ends 8 PM
-              </div>
-            </div>
-            <div class="deal-mini-price">
-              <div class="deal-mini-old">€4.90</div>
-              <div class="deal-mini-new">€1.90</div>
-              <span class="deal-mini-pct">-60%</span>
-            </div>
+          <div id="mapDealList">
+            <!-- deals injected by JS -->
           </div>
         </div>
       </div>
 
       <div class="tab-bar">
-        <button class="tab" onclick="goTo('home')">
+        <button class="tab" data-tab="home" onclick="goTo('home')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2h-4v-7H9v7H5a2 2 0 01-2-2z"/></svg>
           <span>Home</span>
         </button>
-        <button class="tab active" onclick="goTo('map')">
+        <button class="tab active" data-tab="map" onclick="goTo('map')">
           <span class="save-pill">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
             <span>Save</span>
           </span>
         </button>
-        <button class="tab" onclick="goTo('map')">
+        <button class="tab" onclick="showSnack('Search')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
           <span>Search</span>
         </button>
-        <button class="tab" onclick="goTo('profile')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <button class="tab" data-tab="profile" onclick="goTo('profile')">
+          <span style="position: relative;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="badge-dot" id="profileBadgeDotMap" style="display:none;">!</span>
+          </span>
           <span>Account</span>
         </button>
       </div>
     </div>
 
-    <!-- ============ SCREEN: DEAL DETAIL ============ -->
+    <!-- ============ DEAL DETAIL ============ -->
     <div class="screen" id="screen-deal">
       <div class="screen-body" style="padding-bottom: 110px;">
         <div class="nav-header" style="background: transparent; border: none; position: absolute; left:0; right:0; top: 60px; z-index: 25;">
@@ -1815,23 +1866,37 @@ body {
           </button>
         </div>
 
-        <div class="deal-hero">
-          <span class="deal-hero-tag">🌿 SAVE NEAR ME · ENDS 7 PM</span>
-          🥐
+        <div class="deal-hero" id="dealHero">
+          <span class="deal-hero-tag" id="dealHeroTag">🌿 SAVE NEAR ME · ENDS 7 PM</span>
+          <button class="deal-hero-save" id="dealHeroSave" onclick="toggleHeart()">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </button>
+          <span id="dealHeroEmoji">🥐</span>
         </div>
 
         <div class="deal-info">
-          <div class="deal-store">
+          <div class="deal-store" id="dealStore">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/></svg>
             Carrefour City République · 450 m
           </div>
-          <div class="deal-name">Croissants Pur Beurre × 6</div>
-          <div class="deal-sub">Boulangerie maison · Baked today · Best before tomorrow morning</div>
+          <div class="deal-name" id="dealName">Croissants Pur Beurre × 6</div>
+          <div class="deal-sub" id="dealSub">Boulangerie maison · Baked today · Best before tomorrow morning</div>
           <div class="deal-price-row">
-            <span class="deal-price-new">€2.50</span>
-            <span class="deal-price-old">€5.00</span>
-            <span class="deal-price-saving">YOU SAVE €2.50</span>
+            <span class="deal-price-new" id="dealPriceNew">€2.50</span>
+            <span class="deal-price-old" id="dealPriceOld">€5.00</span>
+            <span class="deal-price-saving" id="dealPriceSaving">YOU SAVE €2.50</span>
           </div>
+        </div>
+
+        <div class="urgency-bar">
+          <div class="urgency-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <div class="urgency-text">
+            <div class="urgency-title">Hurry — only <span id="urgencyLeft">4 left</span></div>
+            <div class="urgency-sub" id="urgencySub">3 people viewing right now</div>
+          </div>
+          <div class="urgency-countdown" id="urgencyCountdown">02:47:13</div>
         </div>
 
         <div class="deal-meta-grid">
@@ -1839,28 +1904,28 @@ body {
             <div class="meta-tile-label">Pickup window</div>
             <div class="meta-tile-value">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#004E9F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-              Today, until 7:00 PM
+              <span id="dealPickup">Today, until 7:00 PM</span>
             </div>
           </div>
           <div class="meta-tile">
             <div class="meta-tile-label">Items left</div>
             <div class="meta-tile-value">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E2001A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>
-              Only 4 left
+              <span id="dealLeft">Only 4 left</span>
             </div>
           </div>
           <div class="meta-tile">
             <div class="meta-tile-label">Pickup</div>
             <div class="meta-tile-value">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5A6B7B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 01-8 0"/></svg>
-              In store, aisle 4
+              <span id="dealAisle">In store, aisle 4</span>
             </div>
           </div>
           <div class="meta-tile">
             <div class="meta-tile-label">Walk time</div>
             <div class="meta-tile-value">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5A6B7B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"/><path d="M9 22l3-8 3 8M9 14l-2-5 5-2 4 4 3 1"/></svg>
-              6 min from here
+              <span id="dealWalk">6 min from here</span>
             </div>
           </div>
         </div>
@@ -1870,60 +1935,76 @@ body {
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 014 13c0-3 2-5 4-7l3 4 3-4c2 2 4 4 4 7a7 7 0 01-7 7z"/></svg>
           </div>
           <div class="impact-text">
-            <div class="impact-title">Save 0.8 kg of food from waste</div>
-            <div class="impact-sub">Equivalent to ~1.4 kg CO₂ avoided</div>
+            <div class="impact-title" id="dealImpactTitle">Save 0.8 kg of food from waste</div>
+            <div class="impact-sub" id="dealImpactSub">Equivalent to ~1.4 kg CO₂ avoided</div>
           </div>
-          <div class="impact-points">+25 pts</div>
+          <div class="impact-points" id="dealImpactPoints">+25 pts</div>
+        </div>
+
+        <div class="social-proof">
+          <div class="avatar-stack">
+            <div class="avatar-mini" style="background:#FF8C42">M</div>
+            <div class="avatar-mini" style="background:#5A6B7B">T</div>
+            <div class="avatar-mini" style="background:#1F9D57">A</div>
+          </div>
+          <div class="social-proof-text"><strong id="socialProofCount">12 people</strong> saved this product near you this week.</div>
         </div>
       </div>
 
       <div class="cta-bar">
-        <button class="cta-button green" onclick="reserveDeal(this)">
+        <button class="cta-button green" onclick="reserveDeal(this)" id="reserveBtn">
           <div class="spinner"></div>
           <span class="cta-label">
-            Reserve for €2.50
+            Reserve for <span id="reserveBtnPrice">€2.50</span>
             <svg style="margin-left:6px" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </span>
         </button>
       </div>
     </div>
 
-    <!-- ============ SCREEN: CONFIRMATION ============ -->
+    <!-- ============ CONFIRMATION ============ -->
     <div class="screen confirm-screen" id="screen-confirm">
       <div class="confirm-body">
-        <!-- confetti will be injected by JS -->
         <div class="confirm-check">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l5 5L20 7"/></svg>
         </div>
         <div class="confirm-title">Reserved!</div>
-        <div class="confirm-sub">Your croissants are waiting at <strong>Carrefour City République</strong> until 7:00 PM. Just show this in store.</div>
+        <div class="confirm-sub" id="confirmSub">Your croissants are waiting at <strong>Carrefour City République</strong> until 7:00 PM. Just show this in store.</div>
 
         <div class="confirm-points-card">
           <div class="confirm-points-row">
             <div class="confirm-points-label">💰 You saved</div>
-            <div class="confirm-points-value">€2.50</div>
+            <div class="confirm-points-value" id="confirmSaved">€2.50</div>
           </div>
           <div class="confirm-points-row">
             <div class="confirm-points-label">🌱 Food saved</div>
-            <div class="confirm-points-value">0.8 kg</div>
+            <div class="confirm-points-value" id="confirmFood">0.8 kg</div>
           </div>
           <div class="confirm-points-row">
             <div class="confirm-points-label">🌍 CO₂ avoided</div>
-            <div class="confirm-points-value">1.4 kg</div>
+            <div class="confirm-points-value" id="confirmCo2">1.4 kg</div>
           </div>
           <div class="confirm-points-row">
             <div class="confirm-points-label">⚡ Green Points earned</div>
-            <div class="confirm-points-value">+25 pts</div>
+            <div class="confirm-points-value" id="confirmPoints">+25 pts</div>
+          </div>
+        </div>
+
+        <div class="badge-unlock" id="badgeUnlock" style="display: none;">
+          <div class="badge-unlock-icon" id="badgeUnlockIcon">🥐</div>
+          <div class="badge-unlock-text">
+            <div class="badge-unlock-eyebrow">Badge unlocked</div>
+            <div class="badge-unlock-title" id="badgeUnlockName">Bread Hunter</div>
           </div>
         </div>
       </div>
       <div class="confirm-cta-row">
-        <button class="confirm-share">Share impact</button>
+        <button class="confirm-share" onclick="showSnack('Impact shared 🌿')">Share impact</button>
         <button class="confirm-done" onclick="goTo('profile')">See my impact</button>
       </div>
     </div>
 
-    <!-- ============ SCREEN: PROFILE / LOYALTY ============ -->
+    <!-- ============ PROFILE ============ -->
     <div class="screen" id="screen-profile">
       <div class="screen-body">
         <div class="profile-header">
@@ -1942,11 +2023,11 @@ body {
               Gold Saver
             </div>
             <div class="tier-progress-row">
-              <span>2,840 pts</span>
+              <span id="tierCurrent">2,840 pts</span>
               <span>4,200 pts</span>
             </div>
-            <div class="tier-bar"><div class="tier-bar-fill"></div></div>
-            <div class="tier-next">1,360 pts to Platinum · 30% more rewards unlocked</div>
+            <div class="tier-bar"><div class="tier-bar-fill" id="tierFill"></div></div>
+            <div class="tier-next" id="tierNext">1,360 pts to Platinum · 30% more rewards unlocked</div>
           </div>
         </div>
 
@@ -1960,91 +2041,67 @@ body {
           </div>
           <div class="impact-stats">
             <div class="impact-stat">
-              <div class="impact-stat-num">€47.20</div>
+              <div class="impact-stat-num" id="profileSaved">€47.20</div>
               <div class="impact-stat-lbl">Saved</div>
             </div>
             <div class="impact-stat">
-              <div class="impact-stat-num">8.4 kg</div>
+              <div class="impact-stat-num" id="profileFood">8.4 kg</div>
               <div class="impact-stat-lbl">Food saved</div>
             </div>
             <div class="impact-stat">
-              <div class="impact-stat-num">14.8</div>
+              <div class="impact-stat-num" id="profileCo2">14.8</div>
               <div class="impact-stat-lbl">kg CO₂</div>
             </div>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top: 22px;">Active reservations</div>
+        <div class="reservations-card" id="reservationsCard">
+          <div class="reservations-empty" id="reservationsEmpty">
+            No active reservations yet. Tap a deal to reserve!
           </div>
         </div>
 
         <div class="streak-card">
           <div class="streak-head">
             <div class="streak-title">🔥 Saver streak</div>
-            <div class="streak-count">5 days</div>
+            <div class="streak-count" id="streakCount">5 days</div>
           </div>
           <div class="streak-week">
             <div class="streak-day"><div class="streak-day-name">M</div><div class="streak-dot done">✓</div></div>
             <div class="streak-day"><div class="streak-day-name">T</div><div class="streak-dot done">✓</div></div>
             <div class="streak-day"><div class="streak-day-name">W</div><div class="streak-dot done">✓</div></div>
             <div class="streak-day"><div class="streak-day-name">T</div><div class="streak-dot done">✓</div></div>
-            <div class="streak-day"><div class="streak-day-name">F</div><div class="streak-dot today">5</div></div>
+            <div class="streak-day"><div class="streak-day-name">F</div><div class="streak-dot today" id="streakToday">5</div></div>
             <div class="streak-day"><div class="streak-day-name">S</div><div class="streak-dot"></div></div>
             <div class="streak-day"><div class="streak-day-name">S</div><div class="streak-dot"></div></div>
           </div>
         </div>
 
-        <div class="section-title" style="margin-left: 16px; margin-right: 16px;">Badges <span class="see-all">All badges</span></div>
+        <div class="section-title" style="margin-left: 16px; margin-right: 16px;">Badges <span class="see-all" onclick="showSnack('More badges coming soon')">All badges</span></div>
         <div class="badges-section" style="margin-top: 0;">
-          <div class="badges-grid">
-            <div class="badge-tile new">
-              <div class="badge-icon">🥐</div>
-              <div class="badge-name">Bread Hunter</div>
-              <div class="badge-meta">Earned today</div>
-            </div>
-            <div class="badge-tile">
-              <div class="badge-icon">🌱</div>
-              <div class="badge-name">Eco Starter</div>
-              <div class="badge-meta">Earned · 5 saves</div>
-            </div>
-            <div class="badge-tile">
-              <div class="badge-icon">⚡</div>
-              <div class="badge-name">Fast Saver</div>
-              <div class="badge-meta">Earned · 3 wins</div>
-            </div>
-            <div class="badge-tile locked">
-              <div class="badge-icon">🏆</div>
-              <div class="badge-name">Waste Warrior</div>
-              <div class="badge-meta">15/25 saves</div>
-            </div>
-            <div class="badge-tile locked">
-              <div class="badge-icon">🌍</div>
-              <div class="badge-name">Climate Hero</div>
-              <div class="badge-meta">25 kg CO₂</div>
-            </div>
-            <div class="badge-tile locked">
-              <div class="badge-icon">💎</div>
-              <div class="badge-name">Platinum Club</div>
-              <div class="badge-meta">4,200 pts</div>
-            </div>
+          <div class="badges-grid" id="badgesGrid">
+            <!-- badges injected by JS -->
           </div>
         </div>
-
-        <div style="height: 30px;"></div>
       </div>
 
       <div class="tab-bar">
-        <button class="tab" onclick="goTo('home')">
+        <button class="tab" data-tab="home" onclick="goTo('home')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2h-4v-7H9v7H5a2 2 0 01-2-2z"/></svg>
           <span>Home</span>
         </button>
-        <button class="tab" onclick="goTo('map')">
+        <button class="tab" data-tab="map" onclick="goTo('map')">
           <span class="save-pill">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
             <span>Save</span>
           </span>
         </button>
-        <button class="tab" onclick="goTo('map')">
+        <button class="tab" onclick="showSnack('Search')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
           <span>Search</span>
         </button>
-        <button class="tab active" onclick="goTo('profile')">
+        <button class="tab active" data-tab="profile" onclick="goTo('profile')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           <span>Account</span>
         </button>
@@ -2055,83 +2112,675 @@ body {
 </div>
 
 <script>
-// ====== Status bar clock (locked at Apple's iconic 9:41) ======
-// Keeping 9:41 makes the demo look like every Apple keynote screenshot.
-document.getElementById('clockTime').textContent = '9:41';
+'use strict';
 
-// ====== Screen navigation ======
-let currentScreen = 'home';
+// ============================================================
+//  DATA - all items in one place. Editing this changes the whole app.
+// ============================================================
+const DEALS = [
+  {
+    id: 'croissants', emoji: '🥐', name: 'Croissants Pur Beurre × 6',
+    sub: 'Boulangerie maison · Baked today · Best before tomorrow morning',
+    store: 'Carrefour City République', distance: '450 m', walk: '6 min',
+    priceOld: 5.00, priceNew: 2.50, discount: 50,
+    endsAt: 'today, 7:00 PM', countdownHrs: 2.78,
+    left: 4, aisle: 'aisle 4',
+    food: 0.8, co2: 1.4, points: 25,
+    category: 'bakery', urgent: true,
+    bgGrad: 'linear-gradient(135deg, #FFE4D6, #FFC8A5)',
+    socialCount: 12, viewing: 3,
+    badgeUnlock: { icon: '🥐', name: 'Bread Hunter' },
+    pin: { top: 48, left: 50, featured: true }
+  },
+  {
+    id: 'salade', emoji: '🥗', name: 'Salade César — 350 g',
+    sub: 'Boulangerie maison · Made fresh today · Best before tomorrow 12 PM',
+    store: 'Carrefour Market Voltaire', distance: '620 m', walk: '8 min',
+    priceOld: 4.90, priceNew: 1.90, discount: 60,
+    endsAt: 'today, 8:00 PM', countdownHrs: 3.55,
+    left: 2, aisle: 'aisle 12',
+    food: 0.35, co2: 0.7, points: 18,
+    category: 'fresh', urgent: true,
+    bgGrad: 'linear-gradient(135deg, #E8F4E0, #C8E6B0)',
+    socialCount: 8, viewing: 5,
+    badgeUnlock: { icon: '🌱', name: 'Eco Starter' },
+    pin: { top: 38, left: 26 }
+  },
+  {
+    id: 'camembert', emoji: '🧀', name: 'Camembert AOP',
+    sub: 'Bons producteurs · Best before in 36 hours',
+    store: 'Carrefour City République', distance: '450 m', walk: '6 min',
+    priceOld: 3.80, priceNew: 1.50, discount: 60,
+    endsAt: 'tomorrow, 12:00 PM', countdownHrs: 18.5,
+    left: 7, aisle: 'aisle 7',
+    food: 0.25, co2: 1.1, points: 15,
+    category: 'dairy',
+    bgGrad: 'linear-gradient(135deg, #FFF7D6, #FFE89F)',
+    socialCount: 5, viewing: 2,
+    pin: { top: 34, left: 72 }
+  },
+  {
+    id: 'yaourt', emoji: '🥛', name: 'Yaourt Nature × 8',
+    sub: 'Marque Carrefour Bio · Best before in 48 hours',
+    store: 'Carrefour Market Voltaire', distance: '620 m', walk: '8 min',
+    priceOld: 3.20, priceNew: 1.60, discount: 50,
+    endsAt: 'in 2 days', countdownHrs: 42,
+    left: 12, aisle: 'aisle 8',
+    food: 0.9, co2: 1.8, points: 16,
+    category: 'dairy',
+    bgGrad: 'linear-gradient(135deg, #F0F4FF, #D6E0FF)',
+    socialCount: 9, viewing: 1,
+    pin: { top: 60, left: 22 }
+  },
+  {
+    id: 'poulet', emoji: '🍗', name: 'Poulet rôti fermier',
+    sub: 'Carrefour Bio · Roasted today · Best eaten today',
+    store: 'Carrefour Hyper Belleville', distance: '780 m', walk: '11 min',
+    priceOld: 11.50, priceNew: 5.50, discount: 52,
+    endsAt: 'today, 9:00 PM', countdownHrs: 4.5,
+    left: 3, aisle: 'aisle 1 (deli)',
+    food: 1.2, co2: 4.8, points: 35,
+    category: 'meat', urgent: true,
+    bgGrad: 'linear-gradient(135deg, #FFE5C9, #FFCB94)',
+    socialCount: 6, viewing: 7,
+    badgeUnlock: { icon: '⚡', name: 'Fast Saver' },
+    pin: { top: 62, left: 78 }
+  },
+  {
+    id: 'pain', emoji: '🥖', name: 'Baguette Tradition × 2',
+    sub: 'Boulangerie maison · Baked this morning',
+    store: 'Carrefour City République', distance: '450 m', walk: '6 min',
+    priceOld: 2.40, priceNew: 1.00, discount: 58,
+    endsAt: 'today, 7:00 PM', countdownHrs: 2.78,
+    left: 8, aisle: 'aisle 4',
+    food: 0.5, co2: 0.4, points: 10,
+    category: 'bakery',
+    bgGrad: 'linear-gradient(135deg, #FFEDD6, #FFD6A1)',
+    socialCount: 14, viewing: 2,
+    pin: { top: 70, left: 50 }
+  }
+];
 
-// status bar should be white on screens with dark/colored top header
+const BADGES = [
+  { id: 'bread', icon: '🥐', name: 'Bread Hunter', desc: 'Reserve any bakery item.', earned: false, meta: '0/1 saves', isNew: false },
+  { id: 'eco', icon: '🌱', name: 'Eco Starter', desc: 'Save 5 products from being wasted.', earned: true, meta: 'Earned · 5/5 saves', isNew: false },
+  { id: 'fast', icon: '⚡', name: 'Fast Saver', desc: 'Grab an item with less than 1 hour left.', earned: true, meta: 'Earned · 3 wins', isNew: false },
+  { id: 'warrior', icon: '🏆', name: 'Waste Warrior', desc: 'Reach 25 cumulative saves.', earned: false, meta: '15/25 saves', isNew: false },
+  { id: 'climate', icon: '🌍', name: 'Climate Hero', desc: 'Avoid 25 kg of CO₂ in total.', earned: false, meta: '14.8 / 25 kg CO₂', isNew: false },
+  { id: 'platinum', icon: '💎', name: 'Platinum Club', desc: 'Reach the Platinum tier.', earned: false, meta: '2,840 / 4,200 pts', isNew: false }
+];
+
+// avatar palette for community feed
+const AVATAR_COLORS = ['#FF8C42', '#1F9D57', '#5A6B7B', '#004E9F', '#E0A100', '#B8367A', '#16804A'];
+
+// ============================================================
+//  STATE
+// ============================================================
+const state = {
+  currentScreen: 'home',
+  points: 2840,
+  tierTarget: 4200,
+  saved: 47.20,
+  foodSaved: 8.4,
+  co2: 14.8,
+  reservations: [],     // ids of reserved deals
+  hearted: new Set(),   // ids of hearted deals
+  filter: 'all',
+  currentDealId: 'croissants',
+  pushShownCount: 0,
+};
+
+// ============================================================
+//  UTILITIES
+// ============================================================
+const $ = (id) => document.getElementById(id);
 const lightOnDarkScreens = ['home', 'confirm', 'profile'];
 
-function applyStatusBarTheme() {
-  const sb = document.getElementById('statusBar');
-  if (lightOnDarkScreens.includes(currentScreen)) sb.classList.add('dark');
-  else sb.classList.remove('dark');
-}
-applyStatusBarTheme();
-
-function goTo(name) {
-  if (name === currentScreen) return;
-  const cur = document.getElementById('screen-' + currentScreen);
-  const next = document.getElementById('screen-' + name);
-  if (!next) return;
-
-  cur.classList.remove('active');
-  cur.classList.add('exit-left');
-  setTimeout(() => cur.classList.remove('exit-left'), 300);
-
-  next.classList.add('active');
-  next.querySelector('.screen-body')?.scrollTo(0, 0);
-
-  currentScreen = name;
-  applyStatusBarTheme();
-
-  if (name === 'confirm') fireConfetti();
+function safe(fn) {
+  try { return fn(); } catch (e) { console.warn('[Carrefour app]', e); return null; }
 }
 
-// ====== Reserve flow with loading state ======
+function showSnack(msg) {
+  const el = $('snack');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1800);
+}
+
+function avatarFor(name) {
+  const idx = name.charCodeAt(0) % AVATAR_COLORS.length;
+  return AVATAR_COLORS[idx];
+}
+
+// ============================================================
+//  RENDERING - DATA DRIVEN
+// ============================================================
+function renderDealCarousel() {
+  const root = $('dealCarousel');
+  if (!root) return;
+  root.innerHTML = '';
+  DEALS.filter(d => !state.reservations.includes(d.id)).slice(0, 5).forEach(d => {
+    const card = document.createElement('div');
+    card.className = 'deal-card' + (d.urgent ? ' almost-gone' : '');
+    card.onclick = () => openDeal(d.id);
+    card.innerHTML = `
+      <div class="deal-card-img" style="background: ${d.bgGrad}">
+        <span class="deal-card-pct">−${d.discount}%</span>
+        <button class="deal-card-heart ${state.hearted.has(d.id) ? 'saved' : ''}" data-id="${d.id}" onclick="event.stopPropagation(); toggleHeartCard('${d.id}', this)">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </button>
+        <span style="font-size: 56px;">${d.emoji}</span>
+        ${d.urgent ? `<span class="urgent-tag">${d.left <= 3 ? 'Almost gone' : 'Ending soon'}</span>` : ''}
+      </div>
+      <div class="deal-card-body">
+        <div class="deal-card-name">${d.name}</div>
+        <div class="deal-card-meta">📍 ${d.distance}</div>
+        <div class="deal-card-pricing">
+          <span class="deal-card-new">€${d.priceNew.toFixed(2)}</span>
+          <span class="deal-card-old">€${d.priceOld.toFixed(2)}</span>
+        </div>
+      </div>
+    `;
+    root.appendChild(card);
+  });
+}
+
+function renderMapPins() {
+  const root = $('mapPins');
+  if (!root) return;
+  root.innerHTML = '';
+  const filtered = filteredDeals();
+  filtered.forEach((d, idx) => {
+    if (state.reservations.includes(d.id)) return;
+    if (!d.pin) return;
+    const el = document.createElement('div');
+    el.className = 'map-pin' + (d.pin.featured ? ' featured' : '');
+    el.style.top = d.pin.top + '%';
+    el.style.left = d.pin.left + '%';
+    el.style.animationDelay = (0.05 + idx * 0.06) + 's';
+    el.onclick = () => openDeal(d.id);
+    el.innerHTML = `
+      <div class="pin-bubble">
+        €${d.priceNew.toFixed(2)}
+        <span class="pin-count">${d.left} left</span>
+      </div>
+    `;
+    root.appendChild(el);
+  });
+}
+
+function renderMapDeals() {
+  const root = $('mapDealList');
+  if (!root) return;
+  root.innerHTML = '';
+  const list = filteredDeals();
+  list.forEach(d => {
+    const reserved = state.reservations.includes(d.id);
+    const item = document.createElement('div');
+    item.className = 'deal-mini' + (reserved ? ' reserved' : '') + (d.urgent ? ' urgent' : '');
+    item.onclick = reserved ? null : () => openDeal(d.id);
+    item.innerHTML = `
+      <div class="deal-mini-img" style="background: ${d.bgGrad}">${d.emoji}</div>
+      <div class="deal-mini-body">
+        <div class="deal-mini-name">${d.name}</div>
+        <div class="deal-mini-meta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          ${d.distance} · ends ${d.endsAt.split(',')[1] || d.endsAt}
+        </div>
+      </div>
+      <div class="deal-mini-price">
+        <div class="deal-mini-old">€${d.priceOld.toFixed(2)}</div>
+        <div class="deal-mini-new">€${d.priceNew.toFixed(2)}</div>
+        <span class="deal-mini-pct">−${d.discount}%</span>
+      </div>
+    `;
+    root.appendChild(item);
+  });
+  // update count
+  const count = list.filter(d => !state.reservations.includes(d.id)).length;
+  const sheetCount = $('mapSheetCount');
+  if (sheetCount) sheetCount.textContent = count + ' items';
+  const sheetTitle = $('mapSheetTitle');
+  if (sheetTitle) {
+    if (state.filter === 'all') sheetTitle.textContent = 'Deals within 800 m';
+    else sheetTitle.textContent = 'Filtered deals';
+  }
+}
+
+function filteredDeals() {
+  if (state.filter === 'all') return DEALS;
+  if (state.filter === 'deep') return DEALS.filter(d => d.discount >= 50);
+  return DEALS.filter(d => d.category === state.filter);
+}
+
+function renderBadges() {
+  const root = $('badgesGrid');
+  if (!root) return;
+  root.innerHTML = '';
+  BADGES.forEach(b => {
+    const tile = document.createElement('div');
+    tile.className = 'badge-tile' + (b.earned ? '' : ' locked') + (b.isNew ? ' new' : '');
+    tile.onclick = () => openBadgeModal(b);
+    tile.innerHTML = `
+      <div class="badge-icon">${b.icon}</div>
+      <div class="badge-name">${b.name}</div>
+      <div class="badge-meta">${b.earned ? (b.isNew ? 'Earned today' : b.meta) : b.meta}</div>
+    `;
+    root.appendChild(tile);
+  });
+}
+
+function renderReservations() {
+  const root = $('reservationsCard');
+  if (!root) return;
+  const empty = $('reservationsEmpty');
+  const active = DEALS.filter(d => state.reservations.includes(d.id));
+  // clear, keeping the empty placeholder if needed
+  root.innerHTML = '';
+  if (active.length === 0) {
+    root.innerHTML = '<div class="reservations-empty">No active reservations yet. Tap a deal to reserve!</div>';
+    return;
+  }
+  active.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'reservation-item';
+    el.innerHTML = `
+      <div class="reservation-img" style="background: ${d.bgGrad}">${d.emoji}</div>
+      <div class="reservation-body">
+        <div class="reservation-name">${d.name}</div>
+        <div class="reservation-store">${d.store} · pickup ${d.endsAt}</div>
+      </div>
+      <button class="reservation-action">Show code</button>
+    `;
+    el.querySelector('.reservation-action').onclick = () => showSnack('QR pickup code · scan in store');
+    root.appendChild(el);
+  });
+}
+
+function renderProfileStats() {
+  safe(() => $('homePoints').textContent = state.points.toLocaleString());
+  const pct = Math.min(100, (state.points / state.tierTarget) * 100);
+  safe(() => $('homeProgress').style.width = pct + '%');
+  safe(() => $('homeToPlatinum').textContent = (state.tierTarget - state.points).toLocaleString() + ' pts to Platinum');
+  safe(() => $('tierCurrent').textContent = state.points.toLocaleString() + ' pts');
+  safe(() => $('tierFill').style.width = pct + '%');
+  safe(() => $('tierNext').textContent = (state.tierTarget - state.points).toLocaleString() + ' pts to Platinum · 30% more rewards unlocked');
+  safe(() => $('profileSaved').textContent = '€' + state.saved.toFixed(2));
+  safe(() => $('profileFood').textContent = state.foodSaved.toFixed(1) + ' kg');
+  safe(() => $('profileCo2').textContent = state.co2.toFixed(1));
+  safe(() => $('heroDeals').textContent = DEALS.filter(d => !state.reservations.includes(d.id)).length);
+  safe(() => $('heroEndingSoon').textContent = DEALS.filter(d => d.urgent && !state.reservations.includes(d.id)).length);
+}
+
+// ============================================================
+//  DEAL DETAIL
+// ============================================================
+function openDeal(id) {
+  const d = DEALS.find(x => x.id === id);
+  if (!d) return;
+  state.currentDealId = id;
+  // populate the screen
+  safe(() => $('dealHero').style.background = d.bgGrad);
+  safe(() => $('dealHeroEmoji').textContent = d.emoji);
+  safe(() => $('dealHeroTag').textContent = `🌿 SAVE NEAR ME · ENDS ${d.endsAt.toUpperCase()}`);
+  safe(() => $('dealStore').innerHTML = `
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/></svg>
+    ${d.store} · ${d.distance}
+  `);
+  safe(() => $('dealName').textContent = d.name);
+  safe(() => $('dealSub').textContent = d.sub);
+  safe(() => $('dealPriceNew').textContent = '€' + d.priceNew.toFixed(2));
+  safe(() => $('dealPriceOld').textContent = '€' + d.priceOld.toFixed(2));
+  safe(() => $('dealPriceSaving').textContent = `YOU SAVE €${(d.priceOld - d.priceNew).toFixed(2)}`);
+  safe(() => $('urgencyLeft').textContent = d.left + ' left');
+  safe(() => $('urgencySub').textContent = d.viewing + ' people viewing right now');
+  safe(() => $('dealPickup').textContent = d.endsAt.charAt(0).toUpperCase() + d.endsAt.slice(1));
+  safe(() => $('dealLeft').textContent = `Only ${d.left} left`);
+  safe(() => $('dealAisle').textContent = 'In store, ' + d.aisle);
+  safe(() => $('dealWalk').textContent = d.walk + ' from here');
+  safe(() => $('dealImpactTitle').textContent = `Save ${d.food} kg of food from waste`);
+  safe(() => $('dealImpactSub').textContent = `Equivalent to ~${d.co2} kg CO₂ avoided`);
+  safe(() => $('dealImpactPoints').textContent = '+' + d.points + ' pts');
+  safe(() => $('reserveBtnPrice').textContent = '€' + d.priceNew.toFixed(2));
+  safe(() => $('socialProofCount').textContent = d.socialCount + ' people');
+  // countdown setup
+  startCountdown(d.countdownHrs);
+  // heart state
+  const heart = $('dealHeroSave');
+  if (heart) {
+    if (state.hearted.has(d.id)) heart.classList.add('saved');
+    else heart.classList.remove('saved');
+  }
+  // reset reserve button
+  const btn = $('reserveBtn');
+  if (btn) btn.classList.remove('loading');
+  goTo('deal');
+}
+
+let countdownTimer = null;
+function startCountdown(hrs) {
+  if (countdownTimer) clearInterval(countdownTimer);
+  let totalSec = Math.floor(hrs * 3600);
+  function tick() {
+    const el = $('urgencyCountdown');
+    if (!el) return;
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+    el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    totalSec--;
+    if (totalSec < 0) { clearInterval(countdownTimer); countdownTimer = null; }
+  }
+  tick();
+  countdownTimer = setInterval(tick, 1000);
+}
+
+// ============================================================
+//  RESERVE FLOW
+// ============================================================
 function reserveDeal(btn) {
+  if (!btn || btn.classList.contains('loading')) return;
   btn.classList.add('loading');
   setTimeout(() => {
-    btn.classList.remove('loading');
-    goTo('confirm');
+    safe(() => doReserve());
+    if (btn) btn.classList.remove('loading');
   }, 1100);
 }
 
-// ====== Confetti on confirmation ======
+function doReserve() {
+  const d = DEALS.find(x => x.id === state.currentDealId);
+  if (!d) return;
+  if (state.reservations.includes(d.id)) {
+    // already reserved
+    goTo('confirm');
+    return;
+  }
+  // update state
+  state.reservations.push(d.id);
+  state.points += d.points;
+  state.saved = +(state.saved + (d.priceOld - d.priceNew)).toFixed(2);
+  state.foodSaved = +(state.foodSaved + d.food).toFixed(2);
+  state.co2 = +(state.co2 + d.co2).toFixed(2);
+
+  // populate confirmation
+  safe(() => $('confirmSaved').textContent = '€' + (d.priceOld - d.priceNew).toFixed(2));
+  safe(() => $('confirmFood').textContent = d.food + ' kg');
+  safe(() => $('confirmCo2').textContent = d.co2 + ' kg');
+  safe(() => $('confirmPoints').textContent = '+' + d.points + ' pts');
+  safe(() => $('confirmSub').innerHTML = `Your ${d.name.toLowerCase().split('·')[0].trim()} are waiting at <strong>${d.store}</strong> until ${d.endsAt}. Just show this in store.`);
+
+  // badge unlock
+  const badgeRow = $('badgeUnlock');
+  if (badgeRow) {
+    if (d.badgeUnlock) {
+      // find matching badge by name and mark it earned + new
+      const b = BADGES.find(x => x.name === d.badgeUnlock.name);
+      if (b && !b.earned) {
+        b.earned = true;
+        b.isNew = true;
+        b.meta = 'Earned today';
+        safe(() => $('badgeUnlockIcon').textContent = d.badgeUnlock.icon);
+        safe(() => $('badgeUnlockName').textContent = d.badgeUnlock.name);
+        badgeRow.style.display = 'flex';
+      } else {
+        badgeRow.style.display = 'none';
+      }
+    } else {
+      badgeRow.style.display = 'none';
+    }
+  }
+
+  // show profile dot
+  safe(() => { const dot = $('profileBadgeDot'); if (dot) dot.style.display = 'flex'; });
+  safe(() => { const dot = $('profileBadgeDotMap'); if (dot) dot.style.display = 'flex'; });
+
+  goTo('confirm');
+  // re-render dependent screens
+  renderProfileStats();
+  renderBadges();
+  renderReservations();
+  renderMapDeals();
+  renderMapPins();
+  renderDealCarousel();
+
+  // show floating level toast on confirmation (delayed)
+  setTimeout(() => {
+    safe(() => {
+      $('levelToastTitle').textContent = `+${d.points} Green Points`;
+      $('levelToastSub').textContent = `You're ${(state.tierTarget - state.points).toLocaleString()} pts from Platinum`;
+      $('levelToast').classList.add('show');
+      setTimeout(() => $('levelToast').classList.remove('show'), 3500);
+    });
+  }, 1800);
+}
+
+// ============================================================
+//  HEART / SAVE
+// ============================================================
+function toggleHeart() {
+  const id = state.currentDealId;
+  if (state.hearted.has(id)) {
+    state.hearted.delete(id);
+    safe(() => $('dealHeroSave').classList.remove('saved'));
+    showSnack('Removed from saved');
+  } else {
+    state.hearted.add(id);
+    safe(() => $('dealHeroSave').classList.add('saved'));
+    showSnack('Added to saved 💗');
+  }
+  renderDealCarousel();
+}
+function toggleHeartCard(id, btnEl) {
+  if (state.hearted.has(id)) {
+    state.hearted.delete(id);
+    btnEl.classList.remove('saved');
+  } else {
+    state.hearted.add(id);
+    btnEl.classList.add('saved');
+    showSnack('Added to saved 💗');
+  }
+}
+
+// ============================================================
+//  FILTER
+// ============================================================
+function applyFilter(filter, btn) {
+  state.filter = filter;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderMapPins();
+  renderMapDeals();
+}
+
+// ============================================================
+//  BADGE MODAL
+// ============================================================
+function openBadgeModal(b) {
+  safe(() => {
+    $('modalBadgeIcon').textContent = b.icon;
+    $('modalBadgeIcon').className = 'modal-badge-icon' + (b.earned ? '' : ' locked');
+    $('modalBadgeName').textContent = b.name;
+    $('modalBadgeDesc').textContent = b.desc;
+    $('modalBadgeMeta').textContent = b.earned ? b.meta : 'Locked · ' + b.meta;
+    $('modalOverlay').classList.add('show');
+  });
+}
+function closeModal(e) {
+  if (e && e.target && e.target.id !== 'modalOverlay' && e.target.closest('.modal-sheet')) return;
+  safe(() => $('modalOverlay').classList.remove('show'));
+}
+
+// ============================================================
+//  NAVIGATION
+// ============================================================
+function applyStatusBarTheme() {
+  const sb = $('statusBar');
+  if (!sb) return;
+  if (lightOnDarkScreens.includes(state.currentScreen)) sb.classList.add('dark');
+  else sb.classList.remove('dark');
+}
+
+function goTo(name) {
+  if (name === state.currentScreen) return;
+  const cur = $('screen-' + state.currentScreen);
+  const next = $('screen-' + name);
+  if (!next) return;
+  if (cur) {
+    cur.classList.remove('active');
+    cur.classList.add('exit-left');
+    setTimeout(() => { if (cur) cur.classList.remove('exit-left'); }, 300);
+  }
+  next.classList.add('active');
+  const body = next.querySelector('.screen-body');
+  if (body) body.scrollTo(0, 0);
+  state.currentScreen = name;
+  applyStatusBarTheme();
+  // remove the tutorial pulse on save once user navigates to map
+  if (name === 'map') {
+    safe(() => { const p = $('savePillHome'); if (p) p.classList.remove('pulse'); });
+  }
+  if (name === 'confirm') fireConfetti();
+}
+
+// ============================================================
+//  CONFETTI
+// ============================================================
 function fireConfetti() {
   const screen = document.querySelector('#screen-confirm .confirm-body');
-  // clear old
+  if (!screen) return;
   screen.querySelectorAll('.confetti').forEach(c => c.remove());
   const colors = ['#FFD66B', '#FFFFFF', '#1F9D57', '#5BD08C', '#FFC8A5'];
-  for (let i = 0; i < 28; i++) {
+  for (let i = 0; i < 32; i++) {
     const c = document.createElement('div');
     c.className = 'confetti';
     c.style.background = colors[i % colors.length];
     c.style.left = Math.random() * 100 + '%';
     c.style.top = '-20px';
-    c.style.animationDelay = (Math.random() * 0.6) + 's';
-    c.style.animationDuration = (1.8 + Math.random() * 1.2) + 's';
+    c.style.animationDelay = (Math.random() * 0.7) + 's';
+    c.style.animationDuration = (1.8 + Math.random() * 1.4) + 's';
     if (Math.random() > 0.5) c.style.borderRadius = '50%';
     screen.appendChild(c);
   }
 }
 
-// ====== Push notification (show after 4s on home, only once) ======
-let pushShown = false;
-function maybeShowPush() {
-  if (pushShown || currentScreen !== 'home') return;
-  pushShown = true;
-  const t = document.getElementById('pushToast');
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 5500);
+// ============================================================
+//  LIVE COMMUNITY TICKER
+// ============================================================
+const TICKER_EVENTS = [
+  { name: 'Marie', action: 'just saved croissants × 6', emoji: '🥐' },
+  { name: 'Thomas', action: 'reserved Camembert AOP', emoji: '🧀' },
+  { name: 'Sofia', action: 'saved 1.2 kg of food', emoji: '🌱' },
+  { name: 'Alex', action: 'just earned the Eco Starter badge', emoji: '⚡' },
+  { name: 'Emma', action: 'grabbed the last poulet rôti', emoji: '🍗' },
+  { name: 'Hugo', action: 'reserved a salade César', emoji: '🥗' },
+  { name: 'Camille', action: 'reached Gold tier', emoji: '🏆' },
+  { name: 'Léo', action: 'saved €4.50 just now', emoji: '💰' }
+];
+let tickerIdx = 0;
+function tickTicker() {
+  const root = $('tickerFeed');
+  if (!root) return;
+  const evt = TICKER_EVENTS[tickerIdx % TICKER_EVENTS.length];
+  tickerIdx++;
+  // build new ticker item
+  const item = document.createElement('div');
+  item.className = 'ticker-item';
+  item.innerHTML = `
+    <div class="avatar-mini" style="background: ${avatarFor(evt.name)}">${evt.name.charAt(0)}</div>
+    <div><strong>${evt.name}</strong> ${evt.action} ${evt.emoji}</div>
+  `;
+  // remove existing, add new with fade
+  const existing = root.querySelector('.ticker-item');
+  root.appendChild(item);
+  requestAnimationFrame(() => item.classList.add('show'));
+  if (existing) {
+    existing.classList.remove('show');
+    setTimeout(() => { if (existing && existing.parentNode) existing.parentNode.removeChild(existing); }, 400);
+  }
 }
-setTimeout(maybeShowPush, 4000);
+
+// ============================================================
+//  PUSH NOTIFICATIONS
+// ============================================================
+const PUSH_SEQUENCE = [
+  {
+    delay: 4000,
+    only: 'home',
+    app: 'Carrefour',
+    title: '3 deals near you, ending soon 🌿',
+    sub: 'Boulangerie + 2 more · Save up to 60% within 800 m. Tap to see the map.'
+  },
+  {
+    delay: 14000,
+    only: 'home',
+    app: 'Carrefour · Loyalty',
+    title: 'Your streak is 5 days strong! 🔥',
+    sub: 'Save one more product today to keep it alive and unlock +20 bonus points.'
+  }
+];
 
 function dismissPush() {
-  document.getElementById('pushToast').classList.remove('show');
+  const t = $('pushToast');
+  if (t) t.classList.remove('show');
+}
+
+function schedulePush(n) {
+  const cfg = PUSH_SEQUENCE[n];
+  if (!cfg) return;
+  setTimeout(() => {
+    if (state.currentScreen !== cfg.only) {
+      // skip but schedule the next one anyway
+      schedulePush(n + 1);
+      return;
+    }
+    safe(() => {
+      $('pushApp').textContent = cfg.app;
+      $('pushTitle').textContent = cfg.title;
+      $('pushSub').textContent = cfg.sub;
+      $('pushTime').textContent = 'now';
+      $('pushToast').classList.add('show');
+      setTimeout(() => $('pushToast').classList.remove('show'), 6000);
+    });
+    schedulePush(n + 1);
+  }, cfg.delay);
+}
+
+// ============================================================
+//  NEW DEAL POPS IN (map ambient activity)
+// ============================================================
+function pulseAmbientDeal() {
+  if (state.currentScreen !== 'map') return;
+  // pick a random pin to highlight as "new"
+  const pins = document.querySelectorAll('.map-pin');
+  if (!pins.length) return;
+  const target = pins[Math.floor(Math.random() * pins.length)];
+  if (target) {
+    target.classList.remove('new-pin');
+    void target.offsetWidth;
+    target.classList.add('new-pin');
+    setTimeout(() => target.classList.remove('new-pin'), 900);
+  }
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+function init() {
+  $('clockTime').textContent = '9:41';
+  renderDealCarousel();
+  renderMapPins();
+  renderMapDeals();
+  renderBadges();
+  renderReservations();
+  renderProfileStats();
+  // ticker
+  tickTicker();
+  setInterval(tickTicker, 2800);
+  // pushes
+  schedulePush(0);
+  // ambient deal pulse
+  setInterval(pulseAmbientDeal, 6500);
 }
 
 // prevent double-tap zoom on iOS
@@ -2141,6 +2790,13 @@ document.addEventListener('touchend', e => {
   if (now - lastTouch <= 300) e.preventDefault();
   lastTouch = now;
 }, { passive: false });
+
+// run init when DOM ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 </script>
 
 </body>
